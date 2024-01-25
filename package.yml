@@ -1,8 +1,37 @@
-package: addon_key
-version: '0.0.0'
+package: securit
+version: '0.1.0'
 author: 'Friends Of REDAXO'
-supportpage: https://github.com/FriendsOfREDAXO/addon_key
+supportpage: https://github.com/FriendsOfREDAXO/securit
 requires:
     redaxo: '^5.15.1'
     php:
         version: '>=8.1, <9'
+    packages:
+        yform: '>=3.2,<5.0.0-dev'
+        yrewrite: '^2.8'
+
+page:
+    title: 'translate:securit_navi_title'
+    perm: admin[]
+    icon: rex-icon fa-group
+    subpages:
+        overview: { title: 'translate:securit_overview' }
+        fe_access: { title: 'translate:securit_frontend_access' }
+        error_notification: { title: 'translate:securit_error_notification' }
+        ip_access:
+            title: 'translate:securit_ip_access'
+            table_name: rex_securit_ip_access
+        be_login:
+            title: 'translate:securit_be_login'
+        be_user_log:
+            title: 'translate:securit_be_user_log'
+        header:
+            title: 'translate:securit_header'
+        checks:
+            title: 'translate:securit_checks'
+
+console_commands:
+    securit:ip_access: rex_securit_command_ip_access
+    securit:fe_access: rex_securit_command_fe_access
+
+

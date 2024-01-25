@@ -1,0 +1,89 @@
+securit = Securit
+securit_navi_title = Securit
+securit_title = Securit
+
+securit_overview = Übersicht
+securit_frontend_access = FE Passwort
+securit_fe_access_password = Passwort
+securit_fe_access_settings_updated = Eingaben wurden aktualisiert
+frontend_access_domains = Domains
+frontend_access_domains_info = Wenn keine ausgewählt wird, wird der FE auf allen Domains angewendet
+
+securit_error_notification = Error-Reporting
+securit_error_notification_email = Versand an E-Mail
+securit_error_notification_name = Versand an Name
+securit_error_notification_package = Benachrichtigungsart
+securit_error_notification_key = Kennung
+securit_error_notification_package_notice = Wenn die Exception geloggt werden, können sie als Bundle verschickt werden. Dabei ist der Versand auf die 20 neueste Einträge beschränkt. Damit dieser Prozess funktioniert muss ein Cronjob eingerichtet werden mit <?php rex_securit_error_notification::sendBundle(3600); // Letzte Stunde ?>
+
+securit_log = Logfiles
+securit_log_info = Es gibt {0} Logeinträge in {1}
+securit_log_deleted = Logfiles wurden gelöscht
+securit_log_delete = Logfiles löschen
+securit_log_download = Logfiles herunterladen
+
+securit_error_no_email = Bitte eine E-Mail eingeben
+securit_error_no_name = Bitte einen Namen eingeben
+
+securit_enabled = aktiviert
+securit_disabled = deaktiviert
+securit_direct_email = Direktversand per E-Mail (bei jeder Exception)
+securit_bundle_email = Als Paket (Exceptions werden geloggt und können als Paket über einen Cronjob verschickt werden)
+securit_comment = Kommentare
+securit_created_datetime = Erstellungszeitpunkt
+securit_updated_datetime = Aktualisierungezeitpunkt
+securit_frontend = Frontend
+securit_backend = Backend
+securit_envirement = Umgebung
+securit_block_type = Typ
+securit_block = Zugriff blockieren
+securit_allow = Zugriff erlauben
+securit_error_empty_ip = Bitte IP eintragen
+
+securit_config_save = Konfiguration speichern
+securit_settings = Einstellungen
+
+overview_description_title = Funktionsübersicht
+
+securit_ip_access = IP Zugriff
+securit_ip_access_table = IP Zugriff Tabelle
+securit_ip_access_format = Format: 195.234.12.0/23 oder 212.186.194.226 oder 83.238.117.176-83.238.117.183
+securit_ip_access_status = Status / Bereich
+securit_ip_access_curremt = Meine aktuelle IP: {0}
+
+securit_fe_access_info = Über ein Frontendpasswort, kann eine Seite für bestimmte User über ein gemeinsames Passwort freigegeben werden. Vor allem nützlich bei Testservern und bei Servern, bei denen man z.B. auf BasicAuth verzichten will oder muss (Load Balancer/WAF Abhängigkeiten)
+securit_error_notification_info = Mit Fehlerbenachrichtigungen kann man sich über PHP Fehler auf der Webseite und/oder Backend per E-Mail benachrichtigen lassen. Dabei werden umfassende Umgebungsinformationen mitgeliefert. REQUESTS, Error Stack, Serverumgebung...
+securit_ip_access_info = Über IP Zugriff kann man Backend und Frontendzugriffe erlauben oder sperren. <b>Achtung!</b> Sobald etwas eingetragen wird, kann es zur direkten Blockierung kommen, auch wenn man einen Allow Typ vergibt, da, sobald eine erste IP Range erlaubt ist, alle anderen automatisch verboten werden. Dann bitte über die Console Korrekturen durchführen.
+
+securit_health_link = Link um den Status der Webseite zu erkennen (Heartbeat)
+
+securit_checks = Checkliste
+securit_checks_info = Ein Checkliste mit Links zum überprüfen der Sicherheit, SEO, SSL und Co.
+
+securit_be_login = Session
+securit_be_login_list = Konfiguration
+securit_be_login_config_session_duration = Sessiondauer bei Inaktivität
+securit_be_login_config_keep_alive = Keep-Alive-Ping
+securit_be_login_overall_duration = Maximale Sessiondauer
+securit_be_login_overall_duration_notice = Unabhängg von Aktivitäten im Backend - in Sekunden (Wert bitte mindestens auf 300 Sekunden setzen)
+securit_be_login_settings_updated = Einstellungen wurden aktualisiert
+
+securit_header = Header
+securit_header_htaccess = Folgenden Code in der .htaccess ergänzen. Zusätzlich darauf achten, dass der Apacheserver selbst keinen dieser Header auch sendet. Der Eintrag sorgt dafür, dass ähnliche Header auch bei nicht REDAXO Dateien gesetzt werden.
+
+securit_be_log = Log
+securit_be_user_log = BE-User-Log
+securit_be_user_log_title = Log-Übersicht
+securit_be_user_log_warning_logisinactive = BE-User-Log ist inaktiv. Wir empfehlen es zu aktivieren. <a href="{0}">aktivieren</a>
+securit_be_user_log_warning_logisactive  = BE-User-Log ist aktiv. <a href="{0}">deaktivieren</a>
+securit_be_user_log_activated = BE-User-Log wurde aktiviert
+securit_be_user_log_deactivated = BE-User-Log wurde deaktiviert
+securit_be_user_log_time = Zeitstempel
+securit_be_user_log_user_id = User-Id
+securit_be_user_log_email = E-Mail
+securit_be_user_log_type = Type
+securit_be_user_log_params = Params
+securit_be_user_log_ip = IP
+securit_be_user_delete_log_msg = Log-Einträge werden gelöscht
+securit_be_user_log_page = Page
+securit_be_user_log_impersonator_user_id = Impersonator User Id
