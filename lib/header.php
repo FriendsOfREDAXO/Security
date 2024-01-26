@@ -1,5 +1,7 @@
 <?php
 
+namespace FriendsOfRedaxo\Securit;
+
 /**
  * https://wiki.selfhtml.org/wiki/Sicherheit/Content_Security_Policy
  * https://cspvalidator.org/#url=
@@ -15,7 +17,7 @@
  *
  */
 
-final class rex_securit_header
+final class Header
 {
     public static function init(): void
     {
@@ -66,8 +68,8 @@ final class rex_securit_header
         ];
 
         // if (!$ignoreNonce) {
-            $header['Content-Security-Policy']['script-src'][] = "'nonce-".rex_response::getNonce()."'";
-            $header['Content-Security-Policy']['style-src'][] = "'nonce-".rex_response::getNonce()."'";
+        $header['Content-Security-Policy']['script-src'][] = "'nonce-".\rex_response::getNonce()."'";
+        $header['Content-Security-Policy']['style-src'][] = "'nonce-".\rex_response::getNonce()."'";
         // }
 
         $header['Content-Security-Policy'] = self::buildCSPHeader($header['Content-Security-Policy']);
@@ -117,7 +119,7 @@ final class rex_securit_header
     private static function send(): void
     {
         foreach (self::getHeader() as $name => $value) {
-            if (rex::isBackend() && 'Content-Security-Policy' == $name) {
+            if (\rex::isBackend() && 'Content-Security-Policy' == $name) {
                 // fürs Backend wird ein sehr viel lockereres CSP verwendet
 
                 $Content_Security_Policy_Header = [];
@@ -128,28 +130,28 @@ final class rex_securit_header
 
                 // find out if redaxo is logged in
 
-//                $be_login = rex::getProperty('login');
-//                if (null == $be_login || !$be_login->getUser()) {
-                    // nicht eingeloggt
-                    $Content_Security_Policy_Header['script-src'][] = "'nonce-".rex_response::getNonce()."'";
-                    $Content_Security_Policy_Header['style-src'][] = "'nonce-".rex_response::getNonce()."'";
-//                } else {
-//                    // eingeloggt
-//                    $Content_Security_Policy_Header['script-src'][] = "'unsafe-inline'";
-//                    $Content_Security_Policy_Header['script-src'][] = "'unsafe-eval'";
-//                    $Content_Security_Policy_Header['style-src'][] = "'unsafe-inline'";
-//                }
+                //                $be_login = rex::getProperty('login');
+                //                if (null == $be_login || !$be_login->getUser()) {
+                // nicht eingeloggt
+                $Content_Security_Policy_Header['script-src'][] = "'nonce-".\rex_response::getNonce()."'";
+                $Content_Security_Policy_Header['style-src'][] = "'nonce-".\rex_response::getNonce()."'";
+                //                } else {
+                //                    // eingeloggt
+                //                    $Content_Security_Policy_Header['script-src'][] = "'unsafe-inline'";
+                //                    $Content_Security_Policy_Header['script-src'][] = "'unsafe-eval'";
+                //                    $Content_Security_Policy_Header['style-src'][] = "'unsafe-inline'";
+                //                }
 
                 $value = self::buildCSPHeader($Content_Security_Policy_Header);
-//                continue;
+                //                continue;
             }
 
-            rex_response::setHeader($name, $value);
+            \rex_response::setHeader($name, $value);
         }
 
-        if (rex::isBackend()) {
-            rex_response::sendCacheControl('no-store');
-            rex_response::setHeader('Pragma', 'no-cache');
+        if (\rex::isBackend()) {
+            \rex_response::sendCacheControl('no-store');
+            \rex_response::setHeader('Pragma', 'no-cache');
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+namespace FriendsOfRedaxo\Securit\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  *  bin/console securit:ip_access -help
  */
-final class rex_securit_command_ip_access extends rex_console_command
+final class IPAccess extends \rex_console_command
 {
     public function __construct()
     {
@@ -33,7 +33,7 @@ final class rex_securit_command_ip_access extends rex_console_command
         $io = $this->getStyle($input, $output);
         $io->title('securit IP Access');
 
-        $table = rex_yform_manager_table::get(rex_securit_ip_access::table_name);
+        $table = \rex_yform_manager_table::get(\FriendsOfRedaxo\Securit\IPAccess::table_name);
 
         if (!$table) {
             $io->warning('table not found');
@@ -72,7 +72,7 @@ final class rex_securit_command_ip_access extends rex_console_command
                     return $environment;
                 }
 
-                throw new InvalidArgumentException('backend or frontend?');
+                throw new \InvalidArgumentException('backend or frontend?');
             });
 
             $io->text('environment: '.$environment);
@@ -86,14 +86,14 @@ final class rex_securit_command_ip_access extends rex_console_command
                     return $allow;
                 }
 
-                throw new InvalidArgumentException('allow or block?');
+                throw new \InvalidArgumentException('allow or block?');
             });
 
             $io->text('type: '.$type);
 
             $ip = $io->ask('ip or ip range. Format: x.x.x.x/xx or x.x.x.x-y.y.y.y', '', static function ($ip) {
                 if ('' == $ip) {
-                    throw new InvalidArgumentException('please enter ip or ip range');
+                    throw new \InvalidArgumentException('please enter ip or ip range');
                 }
 
                 return $ip;
@@ -103,7 +103,7 @@ final class rex_securit_command_ip_access extends rex_console_command
 
             $comment = $io->ask('comment', '', static function ($comment) {
                 if ('' == $comment) {
-                    throw new InvalidArgumentException('please enter a comment/description');
+                    throw new \InvalidArgumentException('please enter a comment/description');
                 }
 
                 return $comment;
@@ -119,9 +119,9 @@ final class rex_securit_command_ip_access extends rex_console_command
             $dataset
                 ->save();
 
-            if (0 == count($dataset->getMessages())) {
+            if (0 == \count($dataset->getMessages())) {
                 $io->success('ip added');
-                rex_securit_ip_access::getConfig(true);
+                \FriendsOfRedaxo\Securit\IPAccess::getConfig(true);
             } else {
                 $io->error(print_r($dataset->getMessages(), true));
             }
@@ -129,7 +129,7 @@ final class rex_securit_command_ip_access extends rex_console_command
 
         if ('none' !== $input->getOption('delete')) {
             $id_to_be_deleted = $io->ask('id to be deleted', '', static function ($id) {
-                $table = rex_yform_manager_table::get(rex_securit_ip_access::table_name);
+                $table = \rex_yform_manager_table::get(\FriendsOfRedaxo\Securit\IPAccess::table_name);
                 if (!$table) {
                     return '';
                 }
@@ -137,8 +137,8 @@ final class rex_securit_command_ip_access extends rex_console_command
                 $items = $table->query()
                     ->where('id', $id)
                     ->find();
-                if (1 != count($items)) {
-                    throw new InvalidArgumentException('id not found');
+                if (1 != \count($items)) {
+                    throw new \InvalidArgumentException('id not found');
                 }
 
                 return $id;
@@ -149,7 +149,7 @@ final class rex_securit_command_ip_access extends rex_console_command
                 ->find()
                 ->delete();
 
-            rex_securit_ip_access::getConfig(true);
+            \FriendsOfRedaxo\Securit\IPAccess::getConfig(true);
 
             $io->success('id deleted');
         }

@@ -1,6 +1,8 @@
 <?php
 
-class rex_securit_be_login
+namespace FriendsOfRedaxo\Securit;
+
+class Backendlogin
 {
     /**
      * @throws rex_exception

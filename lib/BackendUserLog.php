@@ -1,6 +1,8 @@
 <?php
 
-final class rex_securit_be_user_log
+namespace FriendsOfRedaxo\Securit;
+
+final class BackendUserLog
 {
     /**
      * @var string
@@ -58,14 +60,14 @@ final class rex_securit_be_user_log
 
     public static function init(): void
     {
-        if (!rex::isBackend()) {
+        if (!\rex::isBackend()) {
             return;
         }
 
         /**
-         * @var rex_backend_login $be_login
+         * @var \rex_backend_login $be_login
          */
-        $be_login = rex::getProperty('login');
+        $be_login = \rex::getProperty('login');
         if (null == $be_login) {
             return;
         }
@@ -75,22 +77,22 @@ final class rex_securit_be_user_log
         }
 
         // Ansonsten URL spezifische Logs
-        $pages = explode('/', rex_request::get('page', 'string', ''));
+        $pages = explode('/', \rex_request::get('page', 'string', ''));
         $params = [];
         if ('yform' === $pages[0]) {
             $params = [
-                'table_name' => rex_request::get('table_name', 'string', ''),
-                'func' => rex_request::get('func', 'string', ''),
-                'data_id' => rex_request::get('data_id', 'int', 0),
+                'table_name' => \rex_request::get('table_name', 'string', ''),
+                'func' => \rex_request::get('func', 'string', ''),
+                'data_id' => \rex_request::get('data_id', 'int', 0),
             ];
         }
 
-        self::log($be_login, rex_request::get('page', 'string', ''), self::TYPE_ACCESS, $params);
+        self::log($be_login, \rex_request::get('page', 'string', ''), self::TYPE_ACCESS, $params);
     }
 
     public static function activate(): void
     {
-        $addon = rex_addon::get('securit');
+        $addon = \rex_addon::get('securit');
         if ($addon->isAvailable()) {
             $addon->setConfig('be_user_log', 1);
             self::$active = true;
@@ -99,7 +101,7 @@ final class rex_securit_be_user_log
 
     public static function deactivate(): void
     {
-        $addon = rex_addon::get('securit');
+        $addon = \rex_addon::get('securit');
         if ($addon->isAvailable()) {
             $addon->setConfig('be_user_log', 0);
             self::$active = false;
@@ -109,7 +111,7 @@ final class rex_securit_be_user_log
     public static function isActive(): bool
     {
         if (null === self::$active) {
-            $addon = rex_addon::get('securit');
+            $addon = \rex_addon::get('securit');
             if ($addon->isAvailable()) {
                 self::$active = 1 === $addon->getConfig('be_user_log');
             }
@@ -120,21 +122,21 @@ final class rex_securit_be_user_log
 
     public static function logFolder(): string
     {
-        return rex_path::addonData('securit', 'be_user');
+        return \rex_path::addonData('securit', 'be_user');
     }
 
     public static function logFile(): string
     {
-        return rex_path::log('be_user.log');
+        return \rex_path::log('be_user.log');
     }
 
     public static function delete(): bool
     {
-        return rex_log_file::delete(self::logFile());
+        return \rex_log_file::delete(self::logFile());
     }
 
     /**
-     * @param rex_backend_login $be_login
+     * @param \rex_backend_login $be_login
      * @param array<string|int, string> $params
      */
     public static function log($be_login, string $page = '', string $type = self::TYPE_ACCESS, array $params = []): void
@@ -143,7 +145,7 @@ final class rex_securit_be_user_log
             return;
         }
 
-        /** @var rex_user|rex_sql|null $be_user */
+        /** @var \rex_user|\rex_sql|null $be_user */
         $be_user = $be_login->getUser();
         $be_impersonate_user = $be_login->getImpersonator();
 
@@ -156,11 +158,11 @@ final class rex_securit_be_user_log
 
         $be_user_view = '';
         if ($be_user) {
-            if ('rex_user' == get_class($be_user)) {
+            if ('rex_user' == $be_user::class) {
                 $be_user_view = $be_user->getId().' ['.$be_user->getValue('email').']';
-            } elseif ('rex_sql' == get_class($be_user)) {
-                /** @var rex_sql $be_user_view */
-                $be_user_view = rex_string::normalize(rex_request('rex_user_login', 'string', ''));
+            } elseif ('rex_sql' == $be_user::class) {
+                /** @var \rex_sql $be_user_view */
+                $be_user_view = \rex_string::normalize(rex_request('rex_user_login', 'string', ''));
                 $type = self::TYPE_LOGIN_FAILED;
                 $params = [
                     'SERVER' => $_SERVER,
@@ -174,7 +176,7 @@ final class rex_securit_be_user_log
             $be_impersonate_user_view = $be_impersonate_user->getId().' ['.$be_impersonate_user->getEmail().']';
         }
 
-        $log = new rex_log_file(self::logFile(), self::MAX_FILE_SIZE);
+        $log = new \rex_log_file(self::logFile(), self::MAX_FILE_SIZE);
         $data = [
             $ip,
             $be_user_view,

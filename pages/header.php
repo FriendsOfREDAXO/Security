@@ -1,12 +1,13 @@
 <?php
 
+namespace FriendsOfRedaxo\Securit;
+
 /**
- * @var rex_addon $this
- * @psalm-scope-this rex_addon
+ * @var \rex_addon $this
  */
 
-echo rex_view::info($this->i18n('securit_header_htaccess'));
+echo \rex_view::info($this->i18n('securit_header_htaccess'));
 
 echo '<pre>';
-echo rex_escape(rex_securit_header::getHeaderAsHtaccess());
+echo rex_escape(Header::getHeaderAsHtaccess());
 echo '</pre>';

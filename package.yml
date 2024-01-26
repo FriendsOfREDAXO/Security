@@ -31,7 +31,7 @@ page:
             title: 'translate:securit_checks'
 
 console_commands:
-    securit:ip_access: rex_securit_command_ip_access
-    securit:fe_access: rex_securit_command_fe_access
+    securit:ip_access: \FriendsOfRedaxo\Securit\Command\IPAccess
+    securit:fe_access: \FriendsOfRedaxo\Securit\Command\FrontendAccess
 
 

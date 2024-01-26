@@ -1,6 +1,10 @@
 <?php
 
-final class rex_securit_error_notification extends rex_error_handler
+namespace FriendsOfRedaxo\Securit;
+
+use Exception;
+
+final class ErrorNotification extends \rex_error_handler
 {
     /**
      * @var string
@@ -14,31 +18,31 @@ final class rex_securit_error_notification extends rex_error_handler
 
     public static function init(): void
     {
-        if (1 != rex_config::get('securit', 'error_notification_status')) {
+        if (1 != \rex_config::get('securit', 'error_notification_status')) {
             return;
         }
 
         set_exception_handler(/**
          * @throws \PHPMailer\PHPMailer\Exception
-         */ static function (Throwable $exception) {
+         */ static function (\PHPMailer\PHPMailer\Exception|\Throwable $exception) {
             self::handleException($exception);
         });
     }
 
     public static function getEMail(): string
     {
-        return empty(rex_config::get('securit', 'error_notification_email')) ? rex::getErrorEmail() : (string) rex_config::get('securit', 'error_notification_email');
+        return empty(\rex_config::get('securit', 'error_notification_email')) ? rex::getErrorEmail() : (string) rex_config::get('securit', 'error_notification_email');
     }
 
     public static function getName(): string
     {
-        return empty(rex_config::get('securit', 'error_notification_name')) ? self::email_name : (string) rex_config::get('securit', 'error_notification_email');
+        return empty(\rex_config::get('securit', 'error_notification_name')) ? self::email_name : (string) rex_config::get('securit', 'error_notification_email');
     }
 
     /**
      * Handles the given Exception.
      *
-     * @param Throwable|Exception $exception The Exception to handle
+     * @param \Throwable|Exception $exception The Exception to handle
      * @throws \PHPMailer\PHPMailer\Exception
      */
     public static function handleException($exception): void
@@ -57,20 +61,20 @@ final class rex_securit_error_notification extends rex_error_handler
         $bugBodyCompressed = (string) preg_replace('/ +/', ' ', $bugBody);
         $markdown_whoops = $bugBodyCompressed;
 
-        if ('0' == rex_config::get('securit', 'error_notification_package')) {
+        if ('0' == \rex_config::get('securit', 'error_notification_package')) {
             // direct email
-            $mail = new rex_mailer();
+            $mail = new \rex_mailer();
             $mail->AddAddress(self::getEMail(), self::getName());
             $mail->Subject = 'securit - Error: Reporting ' . $exception->getMessage();
-            $mail->MsgHTML(rex_markdown::factory()->parse($markdown_whoops, true));
+            $mail->MsgHTML(\rex_markdown::factory()->parse($markdown_whoops, true));
             $mail->AltBody = $markdown_whoops;
             if (!$mail->Send()) {
                 // Mail failed - log Exception
-                rex_file::put(rex_addon::get('securit')->getDataPath('error_notification/'.time().'.log.md'), $markdown_whoops);
+                \rex_file::put(\rex_addon::get('securit')->getDataPath('error_notification/'.time().'.log.md'), $markdown_whoops);
             }
-        } elseif ('1' == rex_config::get('securit', 'error_notification_package')) {
+        } elseif ('1' == \rex_config::get('securit', 'error_notification_package')) {
             // log - bundle for action
-            rex_file::put(rex_addon::get('securit')->getDataPath('error_notification/'.time().'.log.md'), $markdown_whoops);
+            \rex_file::put(\rex_addon::get('securit')->getDataPath('error_notification/'.time().'.log.md'), $markdown_whoops);
         }
 
         parent::handleException($exception);
@@ -78,7 +82,7 @@ final class rex_securit_error_notification extends rex_error_handler
 
     public static function getLogFiles(): array
     {
-        $log_files = scandir(rex_addon::get('securit')->getDataPath('error_notification'));
+        $log_files = scandir(\rex_addon::get('securit')->getDataPath('error_notification'));
         if (!is_array($log_files)) {
             $log_files = [];
         }
@@ -89,7 +93,7 @@ final class rex_securit_error_notification extends rex_error_handler
     public static function deleteLogFiles(): void
     {
         foreach (self::getLogFiles() as $file) {
-            rex_file::delete(rex_addon::get('securit')->getDataPath('error_notification/'.$file));
+            \rex_file::delete(\rex_addon::get('securit')->getDataPath('error_notification/'.$file));
         }
     }
 
@@ -97,12 +101,12 @@ final class rex_securit_error_notification extends rex_error_handler
     {
         $content = [];
         foreach (self::getLogFiles() as $file) {
-            $content[] = rex_file::get(rex_addon::get('securit')->getDataPath('error_notification/'.$file));
+            $content[] = \rex_file::get(\rex_addon::get('securit')->getDataPath('error_notification/'.$file));
         }
 
         $fileName = 'securit_logs_' . date('YmdHis') . '.log';
         header('Content-Disposition: attachment; filename="' . $fileName . '"; charset=utf-8');
-        rex_response::sendContent(implode("\n\n\n\n\n\n-----\n\n\n\n\n\n", $content), 'application/octetstream');
+        \rex_response::sendContent(implode("\n\n\n\n\n\n-----\n\n\n\n\n\n", $content), 'application/octetstream');
     }
 
     /**
