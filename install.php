@@ -1,5 +1,5 @@
 <?php
-$addon = rex_addon::get('maintenance');
+$addon = rex_addon::get('securit');
 
 // Write securit to setup addOns system config
 $config_file = rex_path::coreData('config.yml');
