@@ -1,8 +1,9 @@
 <?php
 
+namespace FriendsOfRedaxo\Securit;
+
 /**
- * @var rex_addon $this
- * @psalm-scope-this rex_addon
+ * @var \rex_addon $this
  */
 
 // FE Access
@@ -57,15 +58,15 @@ echo $fragment->parse('core/page/section.php');
 
 $content = [];
 $content[] = '<h3>'.$this->i18n('frontend_access'). '</h3>';
-$content[] = 1 == rex_config::get('securit', 'fe_access_status') ? '<div class="alert alert-success">'.$this->i18n('enabled').'</div>' : '<div class="alert alert-info" style=";">'.$this->i18n('disabled').'</div>';
+$content[] = 1 == \rex_config::get('securit', 'fe_access_status') ? '<div class="alert alert-success">'.$this->i18n('enabled').'</div>' : '<div class="alert alert-info" style=";">'.$this->i18n('disabled').'</div>';
 
 $content[] = '<h3>'.$this->i18n('error_notification'). '</h3>';
-$content[] = 1 == rex_config::get('securit', 'error_notification_status') ? '<div class="alert alert-success">'.$this->i18n('enabled').'</div>' : '<div class="alert alert-warning" style=";">'.$this->i18n('disabled').'</div>';
+$content[] = 1 == \rex_config::get('securit', 'error_notification_status') ? '<div class="alert alert-success">'.$this->i18n('enabled').'</div>' : '<div class="alert alert-warning" style=";">'.$this->i18n('disabled').'</div>';
 
 $content[] = '<h3>'.$this->i18n('health_link'). '</h3>';
-$content[] = '<div class="alert alert-info"><a href="'.rex_securit_health::getLink().'">'.rex_securit_health::getLink().'</a></div>';
+$content[] = '<div class="alert alert-info"><a href="'.Health::getLink().'">'.Health::getLink().'</a></div>';
 
-$fragment = new rex_fragment();
+$fragment = new \rex_fragment();
 $fragment->setVar('title', $this->i18n('overview_description_title'), false);
 $fragment->setVar('body', implode('', $content), false);
 echo $fragment->parse('core/page/section.php');

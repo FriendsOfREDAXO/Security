@@ -1,9 +1,11 @@
 <?php
 
-final class rex_securit_ip_access
+namespace FriendsOfRedaxo\Securit;
+
+final class IPAccess
 {
     /**
-     * @var class-string<\rex_securit_ip_access>
+     * @var class-string<\FriendsOfRedaxo\Securit\IPAccess>
      */
     public const table_name = 'rex_securit_ip_access';
 
@@ -15,7 +17,7 @@ final class rex_securit_ip_access
     public static bool $active = true;
 
     /**
-     * @throws rex_exception
+     * @throws \rex_exception
      */
     public static function init(): void
     {
@@ -23,8 +25,8 @@ final class rex_securit_ip_access
             return;
         }
 
-        if (rex::isBackend()) {
-            rex_extension::register(['YFORM_DATA_UPDATED', 'YFORM_DATA_ADDED', 'YFORM_DATA_DELETED'], static function ($ep): void {
+        if (\rex::isBackend()) {
+            \rex_extension::register(['YFORM_DATA_UPDATED', 'YFORM_DATA_ADDED', 'YFORM_DATA_DELETED'], static function ($ep): void {
                 $params = $ep->getParams();
                 if (!$params['table']) {
                     return;
@@ -43,8 +45,8 @@ final class rex_securit_ip_access
         }
 
         if (!self::getStatus(self::getIP())) {
-            rex_response::setStatus(rex_response::HTTP_UNAUTHORIZED);
-            rex_response::sendContent(rex_response::HTTP_UNAUTHORIZED);
+            \rex_response::setStatus(\rex_response::HTTP_UNAUTHORIZED);
+            \rex_response::sendContent(\rex_response::HTTP_UNAUTHORIZED);
             exit;
         }
     }
@@ -56,7 +58,7 @@ final class rex_securit_ip_access
 
         $binaryip = '';
         foreach ($unpacked as $char) {
-            $binaryip .= str_pad(decbin(ord($char)), 8, '0', STR_PAD_LEFT);
+            $binaryip .= str_pad(decbin(\ord($char)), 8, '0', STR_PAD_LEFT);
         }
 
         return $binaryip;
@@ -66,9 +68,9 @@ final class rex_securit_ip_access
     {
         $config = self::getConfig(true);
 
-        if (rex::isBackend()) {
+        if (\rex::isBackend()) {
             $environment = 'backend';
-        } elseif (rex::isFrontend()) {
+        } elseif (\rex::isFrontend()) {
             $environment = 'frontend';
         } else {
             return true;
@@ -141,12 +143,12 @@ final class rex_securit_ip_access
 
     public static function getConfig(bool $refresh_load = false): array
     {
-        $filename = rex_addon::get('securit')->getDataPath(self::config_name);
+        $filename = \rex_addon::get('securit')->getDataPath(self::config_name);
         if (!file_exists($filename) || $refresh_load) {
             $config = self::loadConfig();
-            rex_file::putCache($filename, $config);
+            \rex_file::putCache($filename, $config);
         } else {
-            $config = rex_file::getCache($filename);
+            $config = \rex_file::getCache($filename);
         }
 
         return $config;
@@ -154,7 +156,7 @@ final class rex_securit_ip_access
 
     public static function loadConfig(): array
     {
-        $table = rex_yform_manager_table::get(self::table_name);
+        $table = \rex_yform_manager_table::get(self::table_name);
         if (!$table) {
             return [];
         }
@@ -167,14 +169,14 @@ final class rex_securit_ip_access
         $config = [];
 
         foreach ($ips as $ip) {
-            if (false !== strpos($ip->getValue('ip'), ':')) {
+            if (str_contains($ip->getValue('ip'), ':')) {
                 // v6
-                if (false !== strpos($ip->getValue('ip'), '/')) {
+                if (str_contains($ip->getValue('ip'), '/')) {
                     $config[$ip->getValue('type')][$ip->getValue('environment')]['v6']['range'][] = $ip->getValue('ip');
-                } elseif (false !== strpos($ip->getValue('ip'), '-')) {
+                } elseif (str_contains($ip->getValue('ip'), '-')) {
                     $ip_dash_range = str_replace(' ', '', $ip->getValue('ip'));
                     $ip_dash_range = explode('-', $ip_dash_range);
-                    if (2 == count($ip_dash_range) && 4 == count(explode('.', $ip_dash_range[0])) && 4 == count(explode('.', $ip_dash_range[1]))) {
+                    if (2 == \count($ip_dash_range) && 4 == \count(explode('.', $ip_dash_range[0])) && 4 == \count(explode('.', $ip_dash_range[1]))) {
                         $start = explode('.', $ip_dash_range[0]);
                         $end = explode('.', $ip_dash_range[1]);
                         if ($start[3] < $end[3]) {
@@ -188,13 +190,13 @@ final class rex_securit_ip_access
                 } else {
                     $config[$ip->getValue('type')][$ip->getValue('environment')]['v6']['ip'][] = $ip->getValue('ip');
                 }
-            } elseif (false !== strpos($ip->getValue('ip'), '/')) {
+            } elseif (str_contains($ip->getValue('ip'), '/')) {
                 // v4
                 $config[$ip->getValue('type')][$ip->getValue('environment')]['v4']['range'][] = $ip->getValue('ip');
-            } elseif (false !== strpos($ip->getValue('ip'), '-')) {
+            } elseif (str_contains($ip->getValue('ip'), '-')) {
                 $ip_dash_range = str_replace(' ', '', $ip->getValue('ip'));
                 $ip_dash_range = explode('-', $ip_dash_range);
-                if (2 == count($ip_dash_range) && 4 == count(explode('.', $ip_dash_range[0])) && 4 == count(explode('.', $ip_dash_range[1]))) {
+                if (2 == \count($ip_dash_range) && 4 == \count(explode('.', $ip_dash_range[0])) && 4 == \count(explode('.', $ip_dash_range[1]))) {
                     $start = explode('.', $ip_dash_range[0]);
                     $end = explode('.', $ip_dash_range[1]);
                     if ($start[3] < $end[3]) {
@@ -231,7 +233,7 @@ final class rex_securit_ip_access
 
     public static function addIP(array $ip_array): array
     {
-        $table = rex_yform_manager_table::get(self::table_name);
+        $table = \rex_yform_manager_table::get(self::table_name);
         if (!$table) {
             return [];
         }

@@ -1,6 +1,8 @@
 <?php
 
-declare(strict_types=1);
+namespace FriendsOfRedaxo\Securit\Command;
+
+use FriendsOfRedaxo\Securit\FrontendAccess as FrontendAccessNoCommand;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,7 +14,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
  *
  *  bin/console securit:fe_access -help
  */
-final class rex_securit_command_fe_access extends rex_console_command
+final class FrontendAccess extends \rex_console_command
 {
     public function __construct()
     {
@@ -36,16 +38,16 @@ final class rex_securit_command_fe_access extends rex_console_command
         $io->title('securit Frontend Access');
 
         if ('none' !== $input->getOption('info')) {
-            $io->text((rex_securit_fe_access::getStatus()) ? 'Status: active' : 'Status: inactive');
-            $io->text('Frontend-Password: '. rex_securit_fe_access::getPassword());
+            $io->text((FrontendAccessNoCommand::getStatus()) ? 'Status: active' : 'Status: inactive');
+            $io->text('Frontend-Password: '. FrontendAccessNoCommand::getPassword());
 
-            $domainIds = rex_config::get('securit', 'fe_access_domains');
+            $domainIds = \rex_config::get('securit', 'fe_access_domains');
 
             if ('' == $domainIds) {
                 $io->text('Domain: No domains specified!');
             } else {
                 foreach (array_map('intval', explode(',', $domainIds)) as $domainId) {
-                    $domain = rex_yrewrite::getDomainById($domainId);
+                    $domain = \rex_yrewrite::getDomainById($domainId);
                     if ($domain) {
                         $io->text('Active Domain: '. $domain->getUrl());
                     }
@@ -62,26 +64,26 @@ final class rex_securit_command_fe_access extends rex_console_command
                 case 'deactive':
                 case 'inactive':
                 case 'deactivate':
-                    rex_securit_fe_access::deactivate();
+                    FrontendAccessNoCommand::deactivate();
                     $io->success('Frontend Passwort has been deactivated');
                     break;
                 default:
-                    rex_securit_fe_access::activate();
+                    FrontendAccessNoCommand::activate();
                     $io->success('Frontend Passwort has been activated');
             }
         }
 
         if ('none' !== $input->getOption('set-domains')) {
             $domains = [];
-            foreach (rex_yrewrite::getDomains() as $domain) {
+            foreach (\rex_yrewrite::getDomains() as $domain) {
                 $domains[] = $domain->getUrl();
             }
 
             $defaultKeys = [];
 
-            $domainIds = rex_config::get('securit', 'fe_access_domains');
+            $domainIds = \rex_config::get('securit', 'fe_access_domains');
             foreach (array_map('intval', explode(',', (string) @$domainIds)) as $activeDomainId) {
-                $activeDomain = rex_yrewrite::getDomainById($activeDomainId);
+                $activeDomain = \rex_yrewrite::getDomainById($activeDomainId);
                 if ($activeDomain) {
                     foreach ($domains as $domainKey => $domain) {
                         if ($activeDomain->getUrl() == $domain) {
@@ -102,13 +104,13 @@ final class rex_securit_command_fe_access extends rex_console_command
             $selectedDomains = $helper->ask($input, $output, $question);
 
             $domainIds = [];
-            foreach (rex_yrewrite::getDomains() as $domain) {
-                if (in_array($domain->getUrl(), $selectedDomains, true)) {
+            foreach (\rex_yrewrite::getDomains() as $domain) {
+                if (\in_array($domain->getUrl(), $selectedDomains, true)) {
                     $domainIds[] = $domain->getId();
                 }
             }
 
-            rex_addon::get('securit')
+            \rex_addon::get('securit')
                 ->setConfig('fe_access_domains', implode(',', $domainIds));
 
             $io->success('your selection has been saved');
@@ -117,13 +119,13 @@ final class rex_securit_command_fe_access extends rex_console_command
         if ('none' !== $input->getOption('set-password')) {
             $password = $io->ask('enter password: ', md5((string) time()), static function ($password) {
                 if ('' == $password) {
-                    throw new InvalidArgumentException('please enter a passwort');
+                    throw new \InvalidArgumentException('please enter a passwort');
                 }
 
                 return $password;
             });
 
-            rex_securit_fe_access::setPassword($password);
+            FrontendAccessNoCommand::setPassword($password);
 
             $io->success('This Password has been saved: '.$password);
         }

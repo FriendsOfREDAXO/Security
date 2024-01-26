@@ -1,12 +1,13 @@
 <?php
 
+namespace FriendsOfRedaxo\Securit;
 
-rex_securit_health::checkRequest();
-rex_securit_header::init();
+Health::checkRequest();
+Header::init();
 
-rex_extension::register('PACKAGES_INCLUDED', static function ($params): void {
-    rex_securit_error_notification::init();
-    rex_securit_fe_access::init();
-    rex_securit_be_user_log::init();
-    rex_securit_ip_access::init();
-}, rex_extension::EARLY);
+\rex_extension::register('PACKAGES_INCLUDED', static function ($params): void {
+    ErrorNotification::init();
+    FrontendAccess::init();
+    BackendUserLog::init();
+    IPAccess::init();
+}, \rex_extension::EARLY);
