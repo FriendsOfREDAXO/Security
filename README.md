@@ -14,3 +14,23 @@ AddOn which provides a simple way to secure your REDAXO backend with different m
 
 * Use REDAXO Installer as soon as a release is available
 * or clone this repository into your REDAXO installation
+
+## Documentation
+
+### Frontend Password
+
+#### Console
+
+* Overview/Info: bin/console securit:fe_access -i
+* Help: bin/console securit:fe_access --help
+* Activate: bin/console securit:fe_access -s 1
+* Deactivate: bin/console securit:fe_access -s 0
+
+### IP Access Control
+
+#### Console
+
+* Overview/Info: bin/console securit:ip_access -l
+* Help: bin/console securit:ip_access --help
+* Add IP: bin/console securit:ip_access -a
+* Delete IP: bin/console securit:ip_access -d

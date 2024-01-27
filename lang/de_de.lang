@@ -65,7 +65,7 @@ securit_be_login_list = Konfiguration
 securit_be_login_config_session_duration = Sessiondauer bei Inaktivität
 securit_be_login_config_keep_alive = Keep-Alive-Ping
 securit_be_login_overall_duration = Maximale Sessiondauer
-securit_be_login_overall_duration_notice = Unabhängg von Aktivitäten im Backend - in Sekunden (Wert bitte mindestens auf 300 Sekunden setzen)
+securit_be_login_overall_duration_notice = Unabhängig von Aktivitäten im Backend - in Sekunden (Wert bitte mindestens auf 300 Sekunden setzen)
 securit_be_login_settings_updated = Einstellungen wurden aktualisiert
 
 securit_header = Header
