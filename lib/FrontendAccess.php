@@ -45,7 +45,6 @@ final class FrontendAccess
         }
 
         if (rex_request('fe_access_password') == \rex_config::get('securit', 'fe_access_password')) {
-            $sessionConfig = \rex::getProperty('session', [])['frontend']['cookie'] ?? [];
 
             // Diese Cookie muss auch verfügbar sein, wenn man von außen kommt, da sonst bestimmte
             // Authentifizierungen nicht funktionieren können. Hier z.B. SAML
@@ -53,7 +52,7 @@ final class FrontendAccess
             \rex_response::sendCookie(self::COOKIE_NAME, sha1(rex_request('fe_access_password')), [
                 'expires' => strtotime('+1 year'),
                 'samesite' => 'none',
-                'secure' => (bool) $sessionConfig['secure'],
+                'secure' => true,
             ]);
 
             return true;
