@@ -160,6 +160,7 @@ final class BackendUserLog
         if ($be_user) {
             if ('rex_user' == $be_user::class) {
                 $be_user_view = $be_user->getId().' ['.$be_user->getValue('email').']';
+                $params['request_uri'] = $_SERVER['REQUEST_URI'];
             } elseif ('rex_sql' == $be_user::class) {
                 /** @var \rex_sql $be_user_view */
                 $be_user_view = \rex_string::normalize(rex_request('rex_user_login', 'string', ''));
