@@ -6,9 +6,6 @@ namespace FriendsOfRedaxo\Securit;
  * @var \rex_addon $this
  */
 
-// FE Access
-// - gültigkeitsdauer ergänzen - mit Zeit in SHA verpacken. HH:ii:ss ..
-
 // Frontendsessions killen können
 // Allen Usern neue SessionID geben
 
@@ -38,24 +35,6 @@ namespace FriendsOfRedaxo\Securit;
 
 // Header ergänzen
 
-/*
-$addon = rex_addon::get('securit');
-$form = rex_config_form::factory($addon->getName());
-
-$field = $form->addSelectField('fe_access_status', rex_config::get('securit', 'fe_access_status'));
-$field->getSelect()->addOptions([1 => $addon->i18n('enabled'), 0 => $addon->i18n('disabled')]);
-$field->setLabel(rex_i18n::msg('securit_fe_access_status'));
-$field->setNotice(rex_i18n::msg('securit_fe_access_status_notice'));
-
-$fragment = new rex_fragment();
-$fragment->setVar('class', 'edit', false);
-$fragment->setVar('title', 'Settings', false);
-$fragment->setVar('body', $form->get(), false);
-echo $fragment->parse('core/page/section.php');
-*/
-
-// echo '<div class="alert alert-info" style=";">abc</div>';
-
 $content = [];
 $content[] = '<h3>'.$this->i18n('frontend_access'). '</h3>';
 $content[] = 1 == \rex_config::get('securit', 'fe_access_status') ? '<div class="alert alert-success">'.$this->i18n('enabled').'</div>' : '<div class="alert alert-info" style=";">'.$this->i18n('disabled').'</div>';
@@ -70,3 +49,6 @@ $fragment = new \rex_fragment();
 $fragment->setVar('title', $this->i18n('overview_description_title'), false);
 $fragment->setVar('body', implode('', $content), false);
 echo $fragment->parse('core/page/section.php');
+
+$content = \rex_file::get(\rex_path::addon('securit', 'README.md'));
+echo \rex_view::content(\rex_markdown::factory()->parse($content));
