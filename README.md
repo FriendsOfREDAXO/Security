@@ -19,6 +19,8 @@ AddOn which provides a simple way to secure your REDAXO backend with different m
 
 ### Frontend Password
 
+You can activate the overall frontend password in the REDAXO backend under `System > Securit > Frontend Password`.
+
 #### Console
 
 * Overview/Info: bin/console securit:fe_access -i
@@ -28,9 +30,20 @@ AddOn which provides a simple way to secure your REDAXO backend with different m
 
 ### IP Access Control
 
+Especially for staging or dev systems it is useful to block the access to the frontend and backend for all IPs except the ones you need. You can activate the IP Access Control in the REDAXO backend under `System > Securit > IP Access Control`. 
+The backend access should also be blocked for only the IPs you need. 
+
 #### Console
 
 * Overview/Info: bin/console securit:ip_access -l
 * Help: bin/console securit:ip_access --help
 * Add IP: bin/console securit:ip_access -a
 * Delete IP: bin/console securit:ip_access -d
+
+### Backend-User-Log
+
+Is found in the REDAXO Backend under `System > Log > Backend User Log` and shows all backend user actions if activated.
+
+### Error Reporting (Mail)
+
+Error Reporting can be used instantly on every Error with an E-Mail or as an E-Mail with a summary of all errors in a specific time period.

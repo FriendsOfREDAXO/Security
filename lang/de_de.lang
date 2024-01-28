@@ -87,3 +87,6 @@ securit_be_user_log_ip = IP
 securit_be_user_delete_log_msg = Log-Einträge werden gelöscht
 securit_be_user_log_page = Page
 securit_be_user_log_impersonator_user_id = Impersonator User Id
+
+securit_ip_access_frontend = IP Einschränkungen im Frontend
+securit_ip_access_backend = IP Einschränkungen im Backend

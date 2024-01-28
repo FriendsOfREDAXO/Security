@@ -246,4 +246,17 @@ final class IPAccess
 
         return $ds->getMessages();
     }
+
+    public static function isActive($envirement = 'frontend')
+    {
+        $config = self::getConfig();
+
+        foreach (['allow' => true, 'block' => false] as $type => $type_return) {
+            if (isset($config[$type][$envirement])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
