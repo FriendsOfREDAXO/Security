@@ -14,7 +14,7 @@ securit_error_notification_email = Versand an E-Mail
 securit_error_notification_name = Versand an Name
 securit_error_notification_package = Benachrichtigungsart
 securit_error_notification_key = Kennung
-securit_error_notification_package_notice = Wenn die Exception geloggt werden, können sie als Bundle verschickt werden. Dabei ist der Versand auf die 20 neueste Einträge beschränkt. Damit dieser Prozess funktioniert muss ein Cronjob eingerichtet werden mit <?php rex_securit_error_notification::sendBundle(3600); // Letzte Stunde ?>
+securit_error_notification_package_notice = Wenn die Exception geloggt werden, können sie als Bundle verschickt werden. Dabei ist der Versand auf die 20 neueste Einträge beschränkt. Damit dieser Prozess funktioniert muss ein Cronjob eingerichtet werden mit <?php \FriendsOfRedaxo\Securit\ErrorNotification::sendBundle(3600); // Letzte Stunde ?>
 
 securit_log = Logfiles
 securit_log_info = Es gibt {0} Logeinträge in {1}
