@@ -5,6 +5,6 @@
  * @psalm-scope-this rex_addon
  */
 
-echo rex_view::title($this->i18n('securit_title'));
+echo rex_view::title($this->i18n('security_title'));
 
 rex_be_controller::includeCurrentPageSubPath();

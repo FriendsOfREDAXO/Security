@@ -1,6 +1,6 @@
 <?php
 
-namespace FriendsOfRedaxo\Securit;
+namespace FriendsOfRedaxo\Security;
 
 Health::checkRequest();
 Header::init();

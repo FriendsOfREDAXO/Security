@@ -1,13 +1,13 @@
 <?php
 
-namespace FriendsOfRedaxo\Securit;
+namespace FriendsOfRedaxo\Security;
 
 final class IPAccess
 {
     /**
-     * @var class-string<\FriendsOfRedaxo\Securit\IPAccess>
+     * @var class-string<\FriendsOfRedaxo\Security\IPAccess>
      */
-    public const table_name = 'rex_securit_ip_access';
+    public const table_name = 'rex_security_ip_access';
 
     /**
      * @var string
@@ -143,7 +143,7 @@ final class IPAccess
 
     public static function getConfig(bool $refresh_load = false): array
     {
-        $filename = \rex_addon::get('securit')->getDataPath(self::config_name);
+        $filename = \rex_addon::get('security')->getDataPath(self::config_name);
         if (!file_exists($filename) || $refresh_load) {
             $config = self::loadConfig();
             \rex_file::putCache($filename, $config);

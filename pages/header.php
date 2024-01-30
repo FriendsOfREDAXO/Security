@@ -1,6 +1,6 @@
 <?php
 
-namespace FriendsOfRedaxo\Securit;
+namespace FriendsOfRedaxo\Security;
 
 /**
  * @var \rex_addon $this
@@ -11,9 +11,9 @@ $currentDomain = \rex_yrewrite::getCurrentDomain();
 // HTTPS
 $content = [];
 if ('https' == substr($currentDomain->getUrl(), 0, 5)) {
-    $content[] = \rex_view::info(\rex_i18n::msg('securit_fe_https_ok'));
+    $content[] = \rex_view::info(\rex_i18n::msg('security_fe_https_ok'));
 } else {
-    $content[] = \rex_view::error(\rex_i18n::msg('securit_fe_https_warning'));
+    $content[] = \rex_view::error(\rex_i18n::msg('security_fe_https_warning'));
 }
 
 $fragment = new \rex_fragment();
@@ -50,56 +50,56 @@ foreach (['frontend', 'frontendredaxo', 'backend'] as $envirement) {
         }
     }
 
-    $type = 'Strict-Transport-Security';
-    if (isset($header['Strict-Transport-Security'])) {
-        $content[] = \rex_view::success(\rex_i18n::msg('securit_sts_fe_header_found', $header[$type]));
+    $type = 'Strict-Transport-security';
+    if (isset($header['Strict-Transport-security'])) {
+        $content[] = \rex_view::success(\rex_i18n::msg('security_sts_fe_header_found', $header[$type]));
         // TODO und Check: Info über die Dauer der HSTS
         // Info über preload
     } else {
-        $content[] = \rex_view::error(\rex_i18n::msg('securit_sts_fe_header_missing'));
+        $content[] = \rex_view::error(\rex_i18n::msg('security_sts_fe_header_missing'));
     }
 
     $type = 'Referrer-Policy';
     if (isset($header[$type])) {
-        $content[] = \rex_view::success(\rex_i18n::msg('securit_rp_fe_header_found', $header[$type]));
+        $content[] = \rex_view::success(\rex_i18n::msg('security_rp_fe_header_found', $header[$type]));
         // TODO und Check: same-origin
     } else {
-        $content[] = \rex_view::error(\rex_i18n::msg('securit_rp_fe_header_missing'));
+        $content[] = \rex_view::error(\rex_i18n::msg('security_rp_fe_header_missing'));
     }
 
     $type = 'X-XSS-Protection';
     if (isset($header[$type])) {
-        $content[] = \rex_view::info(\rex_i18n::msg('securit_xss_fe_header_found', $header[$type]));
+        $content[] = \rex_view::info(\rex_i18n::msg('security_xss_fe_header_found', $header[$type]));
         // TODO: Erklärung
     } else {
-        $content[] = \rex_view::info(\rex_i18n::msg('securit_xss_fe_header_missing'));
+        $content[] = \rex_view::info(\rex_i18n::msg('security_xss_fe_header_missing'));
     }
 
     $type = 'X-Content-Type-Options';
     if (isset($header[$type])) {
-        $content[] = \rex_view::success(\rex_i18n::msg('securit_cto_fe_header_found', $header[$type]));
+        $content[] = \rex_view::success(\rex_i18n::msg('security_cto_fe_header_found', $header[$type]));
         // TODO: Erklärung
     } else {
-        $content[] = \rex_view::error(\rex_i18n::msg('securit_cto_fe_header_missing'));
+        $content[] = \rex_view::error(\rex_i18n::msg('security_cto_fe_header_missing'));
     }
 
     $type = 'X-Frame-Options';
     if (isset($header[$type])) {
-        $content[] = \rex_view::success(\rex_i18n::msg('securit_fo_fe_header_found', $header[$type]));
+        $content[] = \rex_view::success(\rex_i18n::msg('security_fo_fe_header_found', $header[$type]));
         // TODO: Erklärung
     } else {
-        $content[] = \rex_view::error(\rex_i18n::msg('securit_fo_fe_header_missing'));
+        $content[] = \rex_view::error(\rex_i18n::msg('security_fo_fe_header_missing'));
     }
 
     $fragment = new \rex_fragment();
-    $fragment->setVar('title', \rex_i18n::msg('securit_header_title_'.$envirement, $file), false);
+    $fragment->setVar('title', \rex_i18n::msg('security_header_title_'.$envirement, $file), false);
     $fragment->setVar('body', implode('', $content), false);
     echo $fragment->parse('core/page/section.php');
 
 }
 
 $content = [];
-$content[] = \rex_view::info($this->i18n('securit_header_htaccess'));
+$content[] = \rex_view::info($this->i18n('security_header_htaccess'));
 
 $content[] = '<h4>Apache</h4>';
 $content[] = '<pre>';
@@ -112,30 +112,30 @@ $content[] = rex_escape(Header::getHeaderForNginx());
 $content[] = '</pre>';
 
 $fragment = new \rex_fragment();
-$fragment->setVar('title', \rex_i18n::msg('securit_header_webserver_info'), false);
+$fragment->setVar('title', \rex_i18n::msg('security_header_webserver_info'), false);
 $fragment->setVar('body', implode('', $content), false);
 echo $fragment->parse('core/page/section.php');
 
-// TODO: Content Security Policy
+// TODO: Content security Policy
 
-$addon = \rex_addon::get('securit');
+$addon = \rex_addon::get('security');
 $func = rex_request('func', 'string');
-$activationLink = \rex_url::currentBackendPage() . '&func=securit_activate_nonce';
-$deactivationLink = \rex_url::currentBackendPage() . '&func=securit_deactivate_nonce';
+$activationLink = \rex_url::currentBackendPage() . '&func=security_activate_nonce';
+$deactivationLink = \rex_url::currentBackendPage() . '&func=security_deactivate_nonce';
 
 switch ($func) {
-    case 'securit_activate_nonce':
+    case 'security_activate_nonce':
         echo \rex_view::success($addon->i18n('ycom_user_log_activated'));
         Header::activateBackendNonce();
         break;
-    case 'securit_deactivate_nonce':
+    case 'security_deactivate_nonce':
         echo \rex_view::success($addon->i18n('ycom_user_log_deactivated'));
         Header::deactivateBackendNonce();
         break;
 }
 
 if (!Header::isBackendNonceActive()) {
-    echo \rex_view::warning(\rex_i18n::rawMsg('securit_backend_nonce_inactive', $activationLink));
+    echo \rex_view::warning(\rex_i18n::rawMsg('security_backend_nonce_inactive', $activationLink));
 } else {
-    echo \rex_view::warning(\rex_i18n::rawMsg('securit_backend_nonce_active', $deactivationLink));
+    echo \rex_view::warning(\rex_i18n::rawMsg('security_backend_nonce_active', $deactivationLink));
 }

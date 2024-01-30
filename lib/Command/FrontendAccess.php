@@ -1,8 +1,8 @@
 <?php
 
-namespace FriendsOfRedaxo\Securit\Command;
+namespace FriendsOfRedaxo\Security\Command;
 
-use FriendsOfRedaxo\Securit\FrontendAccess as FrontendAccessNoCommand;
+use FriendsOfRedaxo\Security\FrontendAccess as FrontendAccessNoCommand;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 /**
  * usage.
  *
- *  bin/console securit:fe_access -help
+ *  bin/console security:fe_access -help
  */
 final class FrontendAccess extends \rex_console_command
 {
@@ -24,7 +24,7 @@ final class FrontendAccess extends \rex_console_command
     protected function configure(): void
     {
         $this
-            ->setDescription('securit Frontend Access')
+            ->setDescription('security Frontend Access')
             ->addOption('info', 'i', InputOption::VALUE_OPTIONAL, 'info about fe password and activation status', 'none')
             ->addOption('set-password', 'p', InputOption::VALUE_OPTIONAL, 'set frontend password', 'none')
             ->addOption('set-status', 's', InputOption::VALUE_OPTIONAL, 'set activation status', 'none')
@@ -35,13 +35,13 @@ final class FrontendAccess extends \rex_console_command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = $this->getStyle($input, $output);
-        $io->title('securit Frontend Access');
+        $io->title('security Frontend Access');
 
         if ('none' !== $input->getOption('info')) {
             $io->text((FrontendAccessNoCommand::getStatus()) ? 'Status: active' : 'Status: inactive');
-            $io->text('Frontend-Password: '. FrontendAccessNoCommand::getPassword());
+            $io->text('Frontend-Password: ' . FrontendAccessNoCommand::getPassword());
 
-            $domainIds = \rex_config::get('securit', 'fe_access_domains');
+            $domainIds = \rex_config::get('security', 'fe_access_domains');
 
             if ('' == $domainIds) {
                 $io->text('Domain: No domains specified!');
@@ -49,7 +49,7 @@ final class FrontendAccess extends \rex_console_command
                 foreach (array_map('intval', explode(',', $domainIds)) as $domainId) {
                     $domain = \rex_yrewrite::getDomainById($domainId);
                     if ($domain) {
-                        $io->text('Active Domain: '. $domain->getUrl());
+                        $io->text('Active Domain: ' . $domain->getUrl());
                     }
                 }
             }
@@ -81,7 +81,7 @@ final class FrontendAccess extends \rex_console_command
 
             $defaultKeys = [];
 
-            $domainIds = \rex_config::get('securit', 'fe_access_domains');
+            $domainIds = \rex_config::get('security', 'fe_access_domains');
             foreach (array_map('intval', explode(',', (string) @$domainIds)) as $activeDomainId) {
                 $activeDomain = \rex_yrewrite::getDomainById($activeDomainId);
                 if ($activeDomain) {
@@ -95,9 +95,9 @@ final class FrontendAccess extends \rex_console_command
 
             $helper = $this->getHelper('question');
             $question = new ChoiceQuestion(
-                'select domains for frontend access service (default: '. (([] !== $defaultKeys) ? implode(',', $defaultKeys) : '-').')',
+                'select domains for frontend access service (default: ' . (([] !== $defaultKeys) ? implode(',', $defaultKeys) : '-') . ')',
                 $domains,
-                implode(',', $defaultKeys)
+                implode(',', $defaultKeys),
             );
             $question->setMultiselect(true);
 
@@ -110,7 +110,7 @@ final class FrontendAccess extends \rex_console_command
                 }
             }
 
-            \rex_addon::get('securit')
+            \rex_addon::get('security')
                 ->setConfig('fe_access_domains', implode(',', $domainIds));
 
             $io->success('your selection has been saved');
@@ -127,7 +127,7 @@ final class FrontendAccess extends \rex_console_command
 
             FrontendAccessNoCommand::setPassword($password);
 
-            $io->success('This Password has been saved: '.$password);
+            $io->success('This Password has been saved: ' . $password);
         }
 
         return 0;

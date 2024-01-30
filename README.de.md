@@ -1,4 +1,4 @@
-# Securit für REDAXO CMS >5.15
+# security für REDAXO CMS >5.15
 
 AddOn, das einen einfachen Weg bietet, das REDAXO-Backend mit verschiedenen Methoden zu sichern.
 
@@ -7,7 +7,7 @@ AddOn, das einen einfachen Weg bietet, das REDAXO-Backend mit verschiedenen Meth
 * IP-Zugangskontrolle: IPs und IP-Bereiche zum Blockieren und Zulassen von Frontend und Backend
 * BackendSession-Konfiguration: Sitzungsdauer, KeepAlivePing, maximale Sitzungsdauer
 * Backend-Benutzerprotokoll: Protokollierung aller Aktionen der Backend-Benutzer
-* Header-Sicherheit: Strict-Transport-Security, X-Frame-Options, X-XSS-Protection ... (in Bearbeitung)
+* Header-Sicherheit: Strict-Transport-security, X-Frame-Options, X-XSS-Protection ... (in Bearbeitung)
 * Checkliste: Überprüfung der REDAXO-Installation auf Sicherheitsprobleme mit externen Tools.
 
 ## Installation
@@ -21,16 +21,16 @@ AddOn, das einen einfachen Weg bietet, das REDAXO-Backend mit verschiedenen Meth
 
 #### Konsole
 
-* Übersicht/Info: bin/console securit:fe_access -i
-* Hilfe: bin/console securit:fe_access --help
-* Aktivieren: bin/console securit:fe_access -s 1
-* Deaktivieren: bin/console securit:fe_access -s 0
+* Übersicht/Info: bin/console security:fe_access -i
+* Hilfe: bin/console security:fe_access --help
+* Aktivieren: bin/console security:fe_access -s 1
+* Deaktivieren: bin/console security:fe_access -s 0
 
 ### IP-Zugangskontrolle
 
 #### Konsole
 
-* Übersicht/Info: bin/console securit:ip_access -l
-* Hilfe: bin/console securit:ip_access --help
-* IP hinzufügen: bin/console securit:ip_access -a
-* IP löschen: bin/console securit:ip_access -d
+* Übersicht/Info: bin/console security:ip_access -l
+* Hilfe: bin/console security:ip_access --help
+* IP hinzufügen: bin/console security:ip_access -a
+* IP löschen: bin/console security:ip_access -d

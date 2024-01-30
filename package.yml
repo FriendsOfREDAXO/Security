@@ -1,7 +1,7 @@
-package: securit
+package: security
 version: '0.1.0'
 author: 'Friends Of REDAXO'
-supportpage: https://github.com/FriendsOfREDAXO/securit
+supportpage: https://github.com/FriendsOfREDAXO/security
 requires:
     redaxo: '^5.15.1'
     php:
@@ -11,30 +11,28 @@ requires:
         yrewrite: '^2.8'
 
 page:
-    title: 'translate:securit_navi_title'
+    title: 'translate:security_navi_title'
     perm: admin[]
     icon: rex-icon fa-group
     subpages:
-        overview: { title: 'translate:securit_overview' }
-        fe_access: { title: 'translate:securit_frontend_access' }
-        error_notification: { title: 'translate:securit_error_notification' }
+        overview: { title: 'translate:security_overview' }
+        fe_access: { title: 'translate:security_frontend_access' }
+        error_notification: { title: 'translate:security_error_notification' }
         ip_access:
-            title: 'translate:securit_ip_access'
-            table_name: rex_securit_ip_access
-        be_login:
-            title: 'translate:securit_be_login'
+            title: 'translate:security_ip_access'
+            table_name: rex_security_ip_access
         header:
-            title: 'translate:securit_header'
+            title: 'translate:security_header'
         checks:
-            title: 'translate:securit_checks'
+            title: 'translate:security_checks'
 
 pages:
-    system/log/securit_be_user:
-        title: translate:securit_be_user_log
+    system/log/security_be_user:
+        title: translate:security_be_user_log
         perm: admin
 
 console_commands:
-    securit:ip_access: \FriendsOfRedaxo\Securit\Command\IPAccess
-    securit:fe_access: \FriendsOfRedaxo\Securit\Command\FrontendAccess
+    security:ip_access: \FriendsOfRedaxo\Security\Command\IPAccess
+    security:fe_access: \FriendsOfRedaxo\Security\Command\FrontendAccess
 
 

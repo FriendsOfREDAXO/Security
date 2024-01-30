@@ -1,9 +1,9 @@
 {
-  "rex_securit_ip_access": {
+  "rex_security_ip_access": {
     "table": {
       "status": "1",
-      "table_name": "rex_securit_ip_access",
-      "name": "translate:securit_ip_access_table",
+      "table_name": "rex_security_ip_access",
+      "name": "translate:security_ip_access_table",
       "description": "",
       "list_amount": "50",
       "list_sortfield": "id",
@@ -21,7 +21,7 @@
     },
     "fields": [
       {
-        "table_name": "rex_securit_ip_access",
+        "table_name": "rex_security_ip_access",
         "prio": "1",
         "type_id": "value",
         "type_name": "choice",
@@ -29,11 +29,11 @@
         "list_hidden": "0",
         "search": "1",
         "name": "environment",
-        "label": "translate:securit_envirement",
+        "label": "translate:security_envirement",
         "not_required": "",
         "multiple": "0",
         "expanded": "0",
-        "choices": "translate:securit_disabled=,translate:securit_frontend=frontend,translate:securit_backend=backend",
+        "choices": "translate:security_disabled=,translate:security_frontend=frontend,translate:security_backend=backend",
         "choice_attributes": "",
         "default": "",
         "no_db": "0",
@@ -45,7 +45,7 @@
         "preferred_choices": ""
       },
       {
-        "table_name": "rex_securit_ip_access",
+        "table_name": "rex_security_ip_access",
         "prio": "2",
         "type_id": "value",
         "type_name": "choice",
@@ -53,11 +53,11 @@
         "list_hidden": "0",
         "search": "1",
         "name": "type",
-        "label": "translate:securit_block_type",
+        "label": "translate:security_block_type",
         "not_required": "",
         "multiple": "0",
         "expanded": "0",
-        "choices": "translate:securit_allow=allow,translate:securit_block=block",
+        "choices": "translate:security_allow=allow,translate:security_block=block",
         "choice_attributes": "",
         "default": "",
         "no_db": "0",
@@ -69,7 +69,7 @@
         "preferred_choices": ""
       },
       {
-        "table_name": "rex_securit_ip_access",
+        "table_name": "rex_security_ip_access",
         "prio": "3",
         "type_id": "value",
         "type_name": "text",
@@ -81,13 +81,13 @@
         "not_required": "",
         "default": "",
         "no_db": "0",
-        "notice": "translate:securit_ip_access_format",
+        "notice": "translate:security_ip_access_format",
         "attributes": "",
         "prepend": "",
         "append": ""
       },
       {
-        "table_name": "rex_securit_ip_access",
+        "table_name": "rex_security_ip_access",
         "prio": "4",
         "type_id": "value",
         "type_name": "text",
@@ -95,7 +95,7 @@
         "list_hidden": "0",
         "search": "1",
         "name": "comment",
-        "label": "translate:securit_comment",
+        "label": "translate:security_comment",
         "not_required": "",
         "default": "",
         "no_db": "0",
@@ -105,7 +105,7 @@
         "append": ""
       },
       {
-        "table_name": "rex_securit_ip_access",
+        "table_name": "rex_security_ip_access",
         "prio": "5",
         "type_id": "value",
         "type_name": "datestamp",
@@ -113,7 +113,7 @@
         "list_hidden": "1",
         "search": "1",
         "name": "created_datetime",
-        "label": "translate:securit_created_datetime",
+        "label": "translate:security_created_datetime",
         "not_required": "",
         "only_empty": "1",
         "no_db": "0",
@@ -121,7 +121,7 @@
         "format": ""
       },
       {
-        "table_name": "rex_securit_ip_access",
+        "table_name": "rex_security_ip_access",
         "prio": "6",
         "type_id": "value",
         "type_name": "datestamp",
@@ -129,7 +129,7 @@
         "list_hidden": "0",
         "search": "1",
         "name": "updated_datetime",
-        "label": "translate:securit_updated_datetime",
+        "label": "translate:security_updated_datetime",
         "not_required": "",
         "only_empty": "0",
         "no_db": "0",
@@ -137,7 +137,7 @@
         "format": ""
       },
       {
-        "table_name": "rex_securit_ip_access",
+        "table_name": "rex_security_ip_access",
         "prio": "7",
         "type_id": "validate",
         "type_name": "empty",
@@ -147,10 +147,10 @@
         "name": "ip",
         "label": "",
         "not_required": "",
-        "message": "translate:securit_error_empty_ip"
+        "message": "translate:security_error_empty_ip"
       },
       {
-        "table_name": "rex_securit_ip_access",
+        "table_name": "rex_security_ip_access",
         "prio": "8",
         "type_id": "validate",
         "type_name": "unique",
@@ -160,7 +160,7 @@
         "name": "ip,environment,type",
         "label": "",
         "not_required": "",
-        "message": "translate:securit_error_unique_ip",
+        "message": "translate:security_error_unique_ip",
         "table": "",
         "empty_option": "0"
       }

@@ -1,10 +1,10 @@
 <?php
 
-namespace FriendsOfRedaxo\Securit;
+namespace FriendsOfRedaxo\Security;
 
-$_REQUEST['table_name'] = 'rex_securit_ip_access';
+$_REQUEST['table_name'] = 'rex_security_ip_access';
 
-echo \rex_view::info(\rex_i18n::msg('securit_ip_access_curremt', IPAccess::getIP()));
+echo \rex_view::info(\rex_i18n::msg('security_ip_access_curremt', IPAccess::getIP()));
 
 \rex_extension::register(
     'YFORM_MANAGER_DATA_PAGE_HEADER',
@@ -16,9 +16,9 @@ echo \rex_view::info(\rex_i18n::msg('securit_ip_access_curremt', IPAccess::getIP
         return $ep->getSubject();
     },
     \rex_extension::EARLY,
-    ['table_name' => 'rex_securit_ip_access']
+    ['table_name' => 'rex_security_ip_access']
 );
 
-echo \rex_view::content(\rex_i18n::msg('securit_ip_access_info'));
+echo \rex_view::content(\rex_i18n::msg('security_ip_access_info'));
 
 include \rex_path::plugin('yform', 'manager', 'pages/data_edit.php');

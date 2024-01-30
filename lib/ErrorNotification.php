@@ -1,6 +1,6 @@
 <?php
 
-namespace FriendsOfRedaxo\Securit;
+namespace FriendsOfRedaxo\Security;
 
 use Exception;
 
@@ -9,7 +9,7 @@ final class ErrorNotification extends \rex_error_handler
     /**
      * @var string
      */
-    public const email_name = 'securit Info';
+    public const email_name = 'security Info';
 
     /**
      * @var string[]
@@ -18,7 +18,7 @@ final class ErrorNotification extends \rex_error_handler
 
     public static function init(): void
     {
-        if (1 != \rex_config::get('securit', 'error_notification_status')) {
+        if (1 != \rex_config::get('security', 'error_notification_status')) {
             return;
         }
 
@@ -31,12 +31,12 @@ final class ErrorNotification extends \rex_error_handler
 
     public static function getEMail(): string
     {
-        return empty(\rex_config::get('securit', 'error_notification_email')) ? \rex::getErrorEmail() : (string) \rex_config::get('securit', 'error_notification_email');
+        return empty(\rex_config::get('security', 'error_notification_email')) ? \rex::getErrorEmail() : (string) \rex_config::get('security', 'error_notification_email');
     }
 
     public static function getName(): string
     {
-        return empty(\rex_config::get('securit', 'error_notification_name')) ? self::email_name : (string) \rex_config::get('securit', 'error_notification_email');
+        return empty(\rex_config::get('security', 'error_notification_name')) ? self::email_name : (string) \rex_config::get('security', 'error_notification_email');
     }
 
     /**
@@ -61,20 +61,20 @@ final class ErrorNotification extends \rex_error_handler
         $bugBodyCompressed = (string) preg_replace('/ +/', ' ', $bugBody);
         $markdown_whoops = $bugBodyCompressed;
 
-        if ('0' == \rex_config::get('securit', 'error_notification_package')) {
+        if ('0' == \rex_config::get('security', 'error_notification_package')) {
             // direct email
             $mail = new \rex_mailer();
             $mail->AddAddress(self::getEMail(), self::getName());
-            $mail->Subject = 'securit - Error: Reporting ' . $exception->getMessage();
+            $mail->Subject = 'security - Error: Reporting ' . $exception->getMessage();
             $mail->MsgHTML(\rex_markdown::factory()->parse($markdown_whoops, true));
             $mail->AltBody = $markdown_whoops;
             if (!$mail->Send()) {
                 // Mail failed - log Exception
-                \rex_file::put(\rex_addon::get('securit')->getDataPath('error_notification/'.time().'.log.md'), $markdown_whoops);
+                \rex_file::put(\rex_addon::get('security')->getDataPath('error_notification/'.time().'.log.md'), $markdown_whoops);
             }
-        } elseif ('1' == \rex_config::get('securit', 'error_notification_package')) {
+        } elseif ('1' == \rex_config::get('security', 'error_notification_package')) {
             // log - bundle for action
-            \rex_file::put(\rex_addon::get('securit')->getDataPath('error_notification/'.time().'.log.md'), $markdown_whoops);
+            \rex_file::put(\rex_addon::get('security')->getDataPath('error_notification/'.time().'.log.md'), $markdown_whoops);
         }
 
         parent::handleException($exception);
@@ -82,7 +82,7 @@ final class ErrorNotification extends \rex_error_handler
 
     public static function getLogFiles(): array
     {
-        $log_files = scandir(\rex_addon::get('securit')->getDataPath('error_notification'));
+        $log_files = scandir(\rex_addon::get('security')->getDataPath('error_notification'));
         if (!\is_array($log_files)) {
             $log_files = [];
         }
@@ -93,7 +93,7 @@ final class ErrorNotification extends \rex_error_handler
     public static function deleteLogFiles(): void
     {
         foreach (self::getLogFiles() as $file) {
-            \rex_file::delete(\rex_addon::get('securit')->getDataPath('error_notification/'.$file));
+            \rex_file::delete(\rex_addon::get('security')->getDataPath('error_notification/'.$file));
         }
     }
 
@@ -101,10 +101,10 @@ final class ErrorNotification extends \rex_error_handler
     {
         $content = [];
         foreach (self::getLogFiles() as $file) {
-            $content[] = \rex_file::get(\rex_addon::get('securit')->getDataPath('error_notification/'.$file));
+            $content[] = \rex_file::get(\rex_addon::get('security')->getDataPath('error_notification/'.$file));
         }
 
-        $fileName = 'securit_logs_' . date('YmdHis') . '.log';
+        $fileName = 'security_logs_' . date('YmdHis') . '.log';
         header('Content-Disposition: attachment; filename="' . $fileName . '"; charset=utf-8');
         \rex_response::sendContent(implode("\n\n\n\n\n\n-----\n\n\n\n\n\n", $content), 'application/octetstream');
     }
@@ -129,11 +129,11 @@ final class ErrorNotification extends \rex_error_handler
             if (0 < \count($sendfiles)) {
                 $mail = new \rex_mailer();
                 $mail->AddAddress(self::getEMail(), self::getName());
-                $mail->Subject = 'securit - Error: Bundle-Reporting';
-                $mail->MsgHTML('securit - Error: Bundle-Reporting');
-                $mail->AltBody = 'securit - Error: Bundle-Reporting';
+                $mail->Subject = 'security - Error: Bundle-Reporting';
+                $mail->MsgHTML('security - Error: Bundle-Reporting');
+                $mail->AltBody = 'security - Error: Bundle-Reporting';
                 foreach ($sendfiles as $sendfile) {
-                    $mail->addAttachment(\rex_addon::get('securit')->getDataPath('error_notification/' . $sendfile));
+                    $mail->addAttachment(\rex_addon::get('security')->getDataPath('error_notification/' . $sendfile));
                 }
 
                 try {
@@ -157,7 +157,7 @@ final class ErrorNotification extends \rex_error_handler
         $markdown = "\n##Error Report:\n\n";
         $markdown .= '| Key | Value |'.PHP_EOL;
         $markdown .= '| --- | --- |'.PHP_EOL;
-        $markdown .= '| **key:** | '.\rex_config::get('securit', 'error_notification_key').' |'.PHP_EOL;
+        $markdown .= '| **key:** | '.\rex_config::get('security', 'error_notification_key').' |'.PHP_EOL;
         $markdown .= '| **unixtime with microtime:** | '.microtime(true)." |\n";
         $markdown .= '| **'.$exception::class.":** | {$exception->getMessage()} |\n";
         $markdown .= "| **File:** | $file |\n";

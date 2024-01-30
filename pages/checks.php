@@ -81,9 +81,9 @@ foreach ($links as $link) {
     $content[] = '<h3>'.(('' == $link['name']) ? $link['url'] : $link['name']).'</h3><p><a href="'.$link['url'].'">'.$link['url'].'</a></p>';
 }
 
-echo rex_view::content(rex_i18n::msg('securit_checks_info'));
+echo rex_view::content(rex_i18n::msg('security_checks_info'));
 
 $fragment = new rex_fragment();
-$fragment->setVar('title', $this->i18n('securit_checks'), false);
+$fragment->setVar('title', $this->i18n('security_checks'), false);
 $fragment->setVar('body', implode('', $content), false);
 echo $fragment->parse('core/page/section.php');

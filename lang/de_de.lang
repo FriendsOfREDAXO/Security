@@ -1,115 +1,107 @@
-securit = Securit
-securit_navi_title = Securit
-securit_title = Securit
+security = FOR Security
+security_navi_title = FOR Security
+security_title = FOR Security
 
-securit_overview = Übersicht
-securit_frontend_access = FE Passwort
-securit_fe_access_password = Passwort
-securit_fe_access_settings_updated = Eingaben wurden aktualisiert
+security_overview = Übersicht
+security_frontend_access = FE Passwort
+security_fe_access_password = Passwort
+security_fe_access_settings_updated = Eingaben wurden aktualisiert
 frontend_access_domains = Domains
 frontend_access_domains_info = Wenn keine ausgewählt wird, wird der FE auf allen Domains angewendet
 
-securit_error_notification = Error-Reporting
-securit_error_notification_email = Versand an E-Mail
-securit_error_notification_name = Versand an Name
-securit_error_notification_package = Benachrichtigungsart
-securit_error_notification_key = Kennung
-securit_error_notification_package_notice = Wenn die Exception geloggt werden, können sie als Bundle verschickt werden. Dabei ist der Versand auf die 20 neueste Einträge beschränkt. Damit dieser Prozess funktioniert muss ein Cronjob eingerichtet werden mit <?php \FriendsOfRedaxo\Securit\ErrorNotification::sendBundle(3600); // Letzte Stunde ?>
+security_error_notification = Error-Reporting
+security_error_notification_email = Versand an E-Mail
+security_error_notification_name = Versand an Name
+security_error_notification_package = Benachrichtigungsart
+security_error_notification_key = Kennung
+security_error_notification_package_notice = Wenn die Exception geloggt werden, können sie als Bundle verschickt werden. Dabei ist der Versand auf die 20 neueste Einträge beschränkt. Damit dieser Prozess funktioniert muss ein Cronjob eingerichtet werden mit <?php \FriendsOfRedaxo\Security\ErrorNotification::sendBundle(3600); // Letzte Stunde ?>
 
-securit_log = Logfiles
-securit_log_info = Es gibt {0} Logeinträge in {1}
-securit_log_deleted = Logfiles wurden gelöscht
-securit_log_delete = Logfiles löschen
-securit_log_download = Logfiles herunterladen
+security_log = Logfiles
+security_log_info = Es gibt {0} Logeinträge in {1}
+security_log_deleted = Logfiles wurden gelöscht
+security_log_delete = Logfiles löschen
+security_log_download = Logfiles herunterladen
 
-securit_error_no_email = Bitte eine E-Mail eingeben
-securit_error_no_name = Bitte einen Namen eingeben
+security_error_no_email = Bitte eine E-Mail eingeben
+security_error_no_name = Bitte einen Namen eingeben
 
-securit_enabled = aktiviert
-securit_disabled = deaktiviert
-securit_direct_email = Direktversand per E-Mail (bei jeder Exception)
-securit_bundle_email = Als Paket (Exceptions werden geloggt und können als Paket über einen Cronjob verschickt werden)
-securit_comment = Kommentare
-securit_created_datetime = Erstellungszeitpunkt
-securit_updated_datetime = Aktualisierungezeitpunkt
-securit_frontend = Frontend
-securit_backend = Backend
-securit_envirement = Umgebung
-securit_block_type = Typ
-securit_block = Zugriff blockieren
-securit_allow = Zugriff erlauben
-securit_error_empty_ip = Bitte IP eintragen
+security_enabled = aktiviert
+security_disabled = deaktiviert
+security_direct_email = Direktversand per E-Mail (bei jeder Exception)
+security_bundle_email = Als Paket (Exceptions werden geloggt und können als Paket über einen Cronjob verschickt werden)
+security_comment = Kommentare
+security_created_datetime = Erstellungszeitpunkt
+security_updated_datetime = Aktualisierungezeitpunkt
+security_frontend = Frontend
+security_backend = Backend
+security_envirement = Umgebung
+security_block_type = Typ
+security_block = Zugriff blockieren
+security_allow = Zugriff erlauben
+security_error_empty_ip = Bitte IP eintragen
 
-securit_config_save = Konfiguration speichern
-securit_settings = Einstellungen
+security_config_save = Konfiguration speichern
+security_settings = Einstellungen
 
 overview_description_title = Funktionsübersicht
 
-securit_ip_access = IP Zugriff
-securit_ip_access_table = IP Zugriff Tabelle
-securit_ip_access_format = Format: 195.234.12.0/23 oder 212.186.194.226 oder 83.238.117.176-83.238.117.183
-securit_ip_access_status = Status / Bereich
-securit_ip_access_curremt = Meine aktuelle IP: {0}
+security_ip_access = IP Zugriff
+security_ip_access_table = IP Zugriff Tabelle
+security_ip_access_format = Format: 195.234.12.0/23 oder 212.186.194.226 oder 83.238.117.176-83.238.117.183
+security_ip_access_status = Status / Bereich
+security_ip_access_curremt = Meine aktuelle IP: {0}
 
-securit_fe_access_info = Über ein Frontendpasswort, kann eine Seite für bestimmte User über ein gemeinsames Passwort freigegeben werden. Vor allem nützlich bei Testservern und bei Servern, bei denen man z.B. auf BasicAuth verzichten will oder muss (Load Balancer/WAF Abhängigkeiten)
-securit_error_notification_info = Mit Fehlerbenachrichtigungen kann man sich über PHP Fehler auf der Webseite und/oder Backend per E-Mail benachrichtigen lassen. Dabei werden umfassende Umgebungsinformationen mitgeliefert. REQUESTS, Error Stack, Serverumgebung...
-securit_ip_access_info = Über IP Zugriff kann man Backend und Frontendzugriffe erlauben oder sperren. <b>Achtung!</b> Sobald etwas eingetragen wird, kann es zur direkten Blockierung kommen, auch wenn man einen Allow Typ vergibt, da, sobald eine erste IP Range erlaubt ist, alle anderen automatisch verboten werden. Dann bitte über die Console Korrekturen durchführen.
+security_fe_access_info = Über ein Frontendpasswort, kann eine Seite für bestimmte User über ein gemeinsames Passwort freigegeben werden. Vor allem nützlich bei Testservern und bei Servern, bei denen man z.B. auf BasicAuth verzichten will oder muss (Load Balancer/WAF Abhängigkeiten)
+security_error_notification_info = Mit Fehlerbenachrichtigungen kann man sich über PHP Fehler auf der Webseite und/oder Backend per E-Mail benachrichtigen lassen. Dabei werden umfassende Umgebungsinformationen mitgeliefert. REQUESTS, Error Stack, Serverumgebung...
+security_ip_access_info = Über IP Zugriff kann man Backend und Frontendzugriffe erlauben oder sperren. <b>Achtung!</b> Sobald etwas eingetragen wird, kann es zur direkten Blockierung kommen, auch wenn man einen Allow Typ vergibt, da, sobald eine erste IP Range erlaubt ist, alle anderen automatisch verboten werden. Dann bitte über die Console Korrekturen durchführen.
 
-securit_health_link = Link um den Status der Webseite zu erkennen (Heartbeat)
+security_health_link = Link um den Status der Webseite zu erkennen (Heartbeat)
 
-securit_checks = Checkliste
-securit_checks_info = Ein Checkliste mit Links zum überprüfen der Sicherheit, SEO, SSL und Co.
+security_checks = Checkliste
+security_checks_info = Ein Checkliste mit Links zum überprüfen der Sicherheit, SEO, SSL und Co.
 
-securit_be_login = Session
-securit_be_login_list = Konfiguration
-securit_be_login_config_session_duration = Sessiondauer bei Inaktivität
-securit_be_login_config_keep_alive = Keep-Alive-Ping
-securit_be_login_overall_duration = Maximale Sessiondauer
-securit_be_login_overall_duration_notice = Unabhängig von Aktivitäten im Backend - in Sekunden (Wert bitte mindestens auf 300 Sekunden setzen)
-securit_be_login_settings_updated = Einstellungen wurden aktualisiert
+security_header = Header
+security_header_htaccess = Folgenden Code in der .htaccess ergänzen. Der Eintrag sorgt dafür, dass ähnliche Header auch bei nicht REDAXO Dateien gesetzt werden. Bitte den `Content-security-Policy` Header unbedingt an die eigenen Bedürfnisse anpassen
 
-securit_header = Header
-securit_header_htaccess = Folgenden Code in der .htaccess ergänzen. Der Eintrag sorgt dafür, dass ähnliche Header auch bei nicht REDAXO Dateien gesetzt werden. Bitte den `Content-Security-Policy` Header unbedingt an die eigenen Bedürfnisse anpassen
+security_be_log = Log
+security_be_user_log = security-Backend-User-Log
+security_be_user_log_title = Log-Übersicht
+security_be_user_log_warning_logisinactive = BE-User-Log ist inaktiv. Wir empfehlen es zu aktivieren. <a href="{0}">aktivieren</a>
+security_be_user_log_warning_logisactive  = BE-User-Log ist aktiv. <a href="{0}">deaktivieren</a>
+security_be_user_log_activated = BE-User-Log wurde aktiviert
+security_be_user_log_deactivated = BE-User-Log wurde deaktiviert
+security_be_user_log_time = Zeitstempel
+security_be_user_log_user_id = User-Id
+security_be_user_log_email = E-Mail
+security_be_user_log_type = Type
+security_be_user_log_params = Params
+security_be_user_log_ip = IP
+security_be_user_delete_log_msg = Log-Einträge werden gelöscht
+security_be_user_log_page = Page
+security_be_user_log_impersonator_user_id = Impersonator User Id
 
-securit_be_log = Log
-securit_be_user_log = Security-Backend-User-Log
-securit_be_user_log_title = Log-Übersicht
-securit_be_user_log_warning_logisinactive = BE-User-Log ist inaktiv. Wir empfehlen es zu aktivieren. <a href="{0}">aktivieren</a>
-securit_be_user_log_warning_logisactive  = BE-User-Log ist aktiv. <a href="{0}">deaktivieren</a>
-securit_be_user_log_activated = BE-User-Log wurde aktiviert
-securit_be_user_log_deactivated = BE-User-Log wurde deaktiviert
-securit_be_user_log_time = Zeitstempel
-securit_be_user_log_user_id = User-Id
-securit_be_user_log_email = E-Mail
-securit_be_user_log_type = Type
-securit_be_user_log_params = Params
-securit_be_user_log_ip = IP
-securit_be_user_delete_log_msg = Log-Einträge werden gelöscht
-securit_be_user_log_page = Page
-securit_be_user_log_impersonator_user_id = Impersonator User Id
+security_ip_access_frontend = IP Einschränkungen im Frontend
+security_ip_access_backend = IP Einschränkungen im Backend
 
-securit_ip_access_frontend = IP Einschränkungen im Frontend
-securit_ip_access_backend = IP Einschränkungen im Backend
+security_fe_https_warning = HTTPS: Das Frontend wird nicht über https aufgerufen. Bitte den Domainaufruf in der YRewrite anpassen.
+security_fe_https_ok = HTTPS: Das Frontend wird über https aufgerufen.
+security_sts_fe_header_missing = `HTTP Strict-Transport-security` Header fehlt. Header muss im Apache/Nginx aktiviert werden
+security_sts_fe_header_found = `HTTP Strict-Transport-security` Header gefunden. Mit folgenden Einstellungen: `{0}`
+security_rp_fe_header_missing = `Referrer-Policy` Header fehlt. Header muss im Apache/Nginx aktiviert werden.
+security_rp_fe_header_found = `Referrer-Policy` Header gefunden. Mit folgenden Einstellungen: `{0}`
+security_xss_fe_header_missing = `X-XSS-Protection` fehlt. Der Header ist deprecated und wird durch den CSP Header ersetzt (wenn vorhanden ;) )
+security_xss_fe_header_found = `X-XSS-Protection` ist vorhanden. Ist aber deprecated und der CSP Header ersetzt diesen (wenn vorhanden ;) )
+security_cto_fe_header_missing = `X-Content-Type-Options` wurde nicht gefunden
+security_cto_fe_header_found = `X-Content-Type-Options` wurde gefunden. Mit folgenden Einstellungen: `{0}`
+security_fo_fe_header_missing = `X-Frame-Options` wurde nicht gefunden
+security_fo_fe_header_found = `X-Frame-Options` wurde gefunden. Mit folgenden Einstellungen: `{0}`
 
-securit_fe_https_warning = HTTPS: Das Frontend wird nicht über https aufgerufen. Bitte den Domainaufruf in der YRewrite anpassen.
-securit_fe_https_ok = HTTPS: Das Frontend wird über https aufgerufen.
-securit_sts_fe_header_missing = `HTTP Strict-Transport-Security` Header fehlt. Header muss im Apache/Nginx aktiviert werden
-securit_sts_fe_header_found = `HTTP Strict-Transport-Security` Header gefunden. Mit folgenden Einstellungen: `{0}`
-securit_rp_fe_header_missing = `Referrer-Policy` Header fehlt. Header muss im Apache/Nginx aktiviert werden.
-securit_rp_fe_header_found = `Referrer-Policy` Header gefunden. Mit folgenden Einstellungen: `{0}`
-securit_xss_fe_header_missing = `X-XSS-Protection` fehlt. Der Header ist deprecated und wird durch den CSP Header ersetzt (wenn vorhanden ;) )
-securit_xss_fe_header_found = `X-XSS-Protection` ist vorhanden. Ist aber deprecated und der CSP Header ersetzt diesen (wenn vorhanden ;) )
-securit_cto_fe_header_missing = `X-Content-Type-Options` wurde nicht gefunden
-securit_cto_fe_header_found = `X-Content-Type-Options` wurde gefunden. Mit folgenden Einstellungen: `{0}`
-securit_fo_fe_header_missing = `X-Frame-Options` wurde nicht gefunden
-securit_fo_fe_header_found = `X-Frame-Options` wurde gefunden. Mit folgenden Einstellungen: `{0}`
+security_header_title_frontend = Aufruf einer statischen Datei `{0}`
+security_header_title_frontendredaxo = Aufruf des Frontends (läuft über REDAXO) `{0}`
+security_header_title_backend = Aufruf des Backends `{0}`
 
-securit_header_title_frontend = Aufruf einer statischen Datei `{0}`
-securit_header_title_frontendredaxo = Aufruf des Frontends (läuft über REDAXO) `{0}`
-securit_header_title_backend = Aufruf des Backends `{0}`
+security_header_https = HTTPS
+security_header_webserver_info = Webserver Information
 
-securit_header_https = HTTPS
-securit_header_webserver_info = Webserver Information
-
-securit_backend_nonce_inactive = BackendNonce ist inaktiv. Wir empfehlen es nur zu aktivieren, wenn man das Backend extrem sicher nutzen will. Nicht alle AddOns sind entsprechend angepasst. <a href="{0}">aktivieren</a>
-securit_backend_nonce_active  = BackendNonce ist aktiv. <a href="{0}">deaktivieren</a>
+security_backend_nonce_inactive = BackendNonce ist inaktiv. Wir empfehlen es nur zu aktivieren, wenn man das Backend extrem sicher nutzen will. Nicht alle AddOns sind entsprechend angepasst. <a href="{0}">aktivieren</a>
+security_backend_nonce_active  = BackendNonce ist aktiv. <a href="{0}">deaktivieren</a>
