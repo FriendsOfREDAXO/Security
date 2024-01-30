@@ -58,7 +58,8 @@ final class FrontendAccess
             return true;
         }
 
-        $PasswordForm = '<form action="" method="post"><input type="text" name="fe_access_password" value="" /><input type="submit" /></form>';
+        $PasswordFormPage = new \rex_fragment();
+        $PasswordForm = $PasswordFormPage->parse('security_fe_access_form.php');
         $PasswordForm = \rex_extension::registerPoint(new \rex_extension_point('security_PASSWORD_FORM', $PasswordForm));
 
         \rex_response::sendContent($PasswordForm);
