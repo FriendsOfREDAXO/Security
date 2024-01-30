@@ -1,7 +1,7 @@
 <?php
 $config_file = rex_path::coreData('config.yml');
 $data = rex_file::getConfig($config_file);
-if (!in_array('securit', $data['setup_addons'], true)) {
+if ($data && !in_array('securit', $data['setup_addons'], true)) {
     $data['setup_addons'][] = 'securit';
     rex_file::putConfig($config_file, $data);
 }
