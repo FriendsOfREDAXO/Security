@@ -19,6 +19,8 @@ namespace FriendsOfRedaxo\Securit;
 
 final class Header
 {
+    private static $NonceActive;
+
     public static function init(): void
     {
         self::send();
@@ -34,7 +36,7 @@ final class Header
         return implode(' ', $Value);
     }
 
-    private static function getHeader(bool $ignoreNonce = false): array
+    public static function getHeader(bool $ignoreNonce = false): array
     {
         $header = [];
         $header['Content-Security-Policy'] = [
@@ -67,29 +69,17 @@ final class Header
             // worker-src
         ];
 
-        // if (!$ignoreNonce) {
-        $header['Content-Security-Policy']['script-src'][] = "'nonce-".\rex_response::getNonce()."'";
-        $header['Content-Security-Policy']['style-src'][] = "'nonce-".\rex_response::getNonce()."'";
-        // }
+        if (!$ignoreNonce) {
+            $header['Content-Security-Policy']['script-src'][] = "'nonce-".\rex_response::getNonce()."'";
+            $header['Content-Security-Policy']['style-src'][] = "'nonce-".\rex_response::getNonce()."'";
+        }
 
         $header['Content-Security-Policy'] = self::buildCSPHeader($header['Content-Security-Policy']);
 
-        // edge cases
-
-        // App, Menu
-        // if (isset($_SERVER['REQUEST_URI']) && '/menu/' == $_SERVER['REQUEST_URI']) {
-        //     unset($header['Content-Security-Policy']);
-        // }
-        //
-        unset($header['Content-Security-Policy']);
-
-        // $header['Strict-Transport-Security'] = 'max-age=31536000; preload';
-        // $header['Referrer-Policy'] = 'same-origin';
-        // $header['X-XSS-Protection'] = '0'; // '1; mode=block';
-        // $header['X-Content-Type-Options'] = 'nosniff';
-        // $header['X-Frame-Options'] = 'sameorigin';
-        // Header always unset "X−Powered−By"
-        // Header always unset "Server"
+        $header['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains; preload';
+        $header['Referrer-Policy'] = 'same-origin';
+        $header['X-Content-Type-Options'] = 'nosniff';
+        $header['X-Frame-Options'] = 'sameorigin';
 
         return $header;
     }
@@ -102,6 +92,7 @@ final class Header
         }
 
         $return[] = '	Header unset X-Powered-By';
+        $return[] = '	Header unset Server';
 
         return '<IfModule mod_headers.c>'."\n".implode("\n", $return)."\n".'</IfModule>';
     }
@@ -110,48 +101,63 @@ final class Header
     {
         $return = [];
         foreach (self::getHeader(true) as $name => $value) {
-            $return[] = "\t".'add_header '.$name.' "'.$value.'"';
+            $return[] = 'add_header '.$name.' "'.$value.'"';
         }
 
         return implode("\n", $return);
     }
 
+    public static function activateBackendNonce(): void
+    {
+        $addon = \rex_addon::get('securit');
+        $addon->setConfig('BackendNonce', 1);
+        self::$NonceActive = true;
+    }
+
+    public static function deactivateBackendNonce(): void
+    {
+        $addon = \rex_addon::get('securit');
+        $addon->setConfig('BackendNonce', 0);
+        self::$NonceActive = false;
+    }
+
+    public static function isBackendNonceActive(): bool
+    {
+        if (null === self::$NonceActive) {
+            $addon = \rex_addon::get('securit');
+            self::$NonceActive = (1 === $addon->getConfig('BackendNonce')) ? true : false;
+        }
+        return (self::$NonceActive) ? true : false;
+    }
+
     private static function send(): void
     {
-        foreach (self::getHeader() as $name => $value) {
-            if (\rex::isBackend() && 'Content-Security-Policy' == $name) {
-                // fürs Backend wird ein sehr viel lockereres CSP verwendet
+        if (\rex::isBackend() && self::isBackendNonceActive()) {
+            // fürs Backend wird ein sehr viel lockereres CSP verwendet
 
-                $Content_Security_Policy_Header = [];
-                $Content_Security_Policy_Header['script-src'][] = "'self'";
-                $Content_Security_Policy_Header['style-src'][] = "'self'";
-                $Content_Security_Policy_Header['base-uri'][] = "'self'";
-                $Content_Security_Policy_Header['object-src'][] = "'none'";
+            $Content_Security_Policy_Header = [];
+            $Content_Security_Policy_Header['script-src'][] = "'self'";
+            $Content_Security_Policy_Header['style-src'][] = "'self'";
+            $Content_Security_Policy_Header['base-uri'][] = "'self'";
+            $Content_Security_Policy_Header['object-src'][] = "'none'";
 
-                // find out if redaxo is logged in
-
-                //                $be_login = rex::getProperty('login');
-                //                if (null == $be_login || !$be_login->getUser()) {
+            $be_login = \rex::getProperty('login');
+            if (null == $be_login || !$be_login->getUser()) {
                 // nicht eingeloggt
+                $Content_Security_Policy_Header['script-src'][] = "'unsafe-inline'";
+                $Content_Security_Policy_Header['script-src'][] = "'unsafe-eval'";
+                $Content_Security_Policy_Header['style-src'][] = "'unsafe-inline'";
+            } else {
+                // eingeloggt
                 $Content_Security_Policy_Header['script-src'][] = "'nonce-".\rex_response::getNonce()."'";
                 $Content_Security_Policy_Header['style-src'][] = "'nonce-".\rex_response::getNonce()."'";
-                //                } else {
-                //                    // eingeloggt
-                //                    $Content_Security_Policy_Header['script-src'][] = "'unsafe-inline'";
-                //                    $Content_Security_Policy_Header['script-src'][] = "'unsafe-eval'";
-                //                    $Content_Security_Policy_Header['style-src'][] = "'unsafe-inline'";
-                //                }
-
-                $value = self::buildCSPHeader($Content_Security_Policy_Header);
-                //                continue;
             }
 
-            \rex_response::setHeader($name, $value);
-        }
-
-        if (\rex::isBackend()) {
+            $value = self::buildCSPHeader($Content_Security_Policy_Header);
+            \rex_response::setHeader('Content-Security-Policy', $value);
             \rex_response::sendCacheControl('no-store');
             \rex_response::setHeader('Pragma', 'no-cache');
         }
+
     }
 }

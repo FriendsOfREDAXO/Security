@@ -69,7 +69,7 @@ securit_be_login_overall_duration_notice = Unabhängig von Aktivitäten im Backe
 securit_be_login_settings_updated = Einstellungen wurden aktualisiert
 
 securit_header = Header
-securit_header_htaccess = Folgenden Code in der .htaccess ergänzen. Zusätzlich darauf achten, dass der Apacheserver selbst keinen dieser Header auch sendet. Der Eintrag sorgt dafür, dass ähnliche Header auch bei nicht REDAXO Dateien gesetzt werden.
+securit_header_htaccess = Folgenden Code in der .htaccess ergänzen. Der Eintrag sorgt dafür, dass ähnliche Header auch bei nicht REDAXO Dateien gesetzt werden. Bitte den `Content-Security-Policy` Header unbedingt an die eigenen Bedürfnisse anpassen
 
 securit_be_log = Log
 securit_be_user_log = Security-Backend-User-Log
@@ -90,3 +90,26 @@ securit_be_user_log_impersonator_user_id = Impersonator User Id
 
 securit_ip_access_frontend = IP Einschränkungen im Frontend
 securit_ip_access_backend = IP Einschränkungen im Backend
+
+securit_fe_https_warning = HTTPS: Das Frontend wird nicht über https aufgerufen. Bitte den Domainaufruf in der YRewrite anpassen.
+securit_fe_https_ok = HTTPS: Das Frontend wird über https aufgerufen.
+securit_sts_fe_header_missing = `HTTP Strict-Transport-Security` Header fehlt. Header muss im Apache/Nginx aktiviert werden
+securit_sts_fe_header_found = `HTTP Strict-Transport-Security` Header gefunden. Mit folgenden Einstellungen: `{0}`
+securit_rp_fe_header_missing = `Referrer-Policy` Header fehlt. Header muss im Apache/Nginx aktiviert werden.
+securit_rp_fe_header_found = `Referrer-Policy` Header gefunden. Mit folgenden Einstellungen: `{0}`
+securit_xss_fe_header_missing = `X-XSS-Protection` fehlt. Der Header ist deprecated und wird durch den CSP Header ersetzt (wenn vorhanden ;) )
+securit_xss_fe_header_found = `X-XSS-Protection` ist vorhanden. Ist aber deprecated und der CSP Header ersetzt diesen (wenn vorhanden ;) )
+securit_cto_fe_header_missing = `X-Content-Type-Options` wurde nicht gefunden
+securit_cto_fe_header_found = `X-Content-Type-Options` wurde gefunden. Mit folgenden Einstellungen: `{0}`
+securit_fo_fe_header_missing = `X-Frame-Options` wurde nicht gefunden
+securit_fo_fe_header_found = `X-Frame-Options` wurde gefunden. Mit folgenden Einstellungen: `{0}`
+
+securit_header_title_frontend = Aufruf einer statischen Datei `{0}`
+securit_header_title_frontendredaxo = Aufruf des Frontends (läuft über REDAXO) `{0}`
+securit_header_title_backend = Aufruf des Backends `{0}`
+
+securit_header_https = HTTPS
+securit_header_webserver_info = Webserver Information
+
+securit_backend_nonce_inactive = BackendNonce ist inaktiv. Wir empfehlen es nur zu aktivieren, wenn man das Backend extrem sicher nutzen will. Nicht alle AddOns sind entsprechend angepasst. <a href="{0}">aktivieren</a>
+securit_backend_nonce_active  = BackendNonce ist aktiv. <a href="{0}">deaktivieren</a>
