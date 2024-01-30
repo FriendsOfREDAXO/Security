@@ -1,13 +1,13 @@
 <?php
 
-namespace FriendsOfRedaxo\Securit;
+namespace FriendsOfRedaxo\Security;
 
 final class Health
 {
     /**
      * @var string
      */
-    private const REQUEST_PARAMS = 'securit_health';
+    private const REQUEST_PARAMS = 'security_health';
 
     public static function checkRequest(): void
     {

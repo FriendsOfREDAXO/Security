@@ -1,6 +1,6 @@
 <?php
 
-namespace FriendsOfRedaxo\Securit;
+namespace FriendsOfRedaxo\Security;
 
 use rex_addon;
 
@@ -9,9 +9,9 @@ use rex_addon;
  * @psalm-scope-this rex_addon
  */
 
-$addon = \rex_addon::get('securit');
+$addon = \rex_addon::get('security');
 
-echo \rex_view::content(\rex_i18n::msg('securit_error_notification_info'));
+echo \rex_view::content(\rex_i18n::msg('security_error_notification_info'));
 
 if ('update' == rex_request('func', 'string')) {
     $this->setConfig('error_notification_status', rex_request('error_notification_status', 'int'));
@@ -19,13 +19,13 @@ if ('update' == rex_request('func', 'string')) {
     $this->setConfig('error_notification_name', rex_request('error_notification_name', 'string'));
     $this->setConfig('error_notification_key', rex_request('error_notification_key', 'string'));
     $this->setConfig('error_notification_package', rex_request('error_notification_package', 'int'));
-    echo \rex_view::success($this->i18n('securit_fe_access_settings_updated'));
+    echo \rex_view::success($this->i18n('security_fe_access_settings_updated'));
 }
 
 $formElements = [];
 
 $selActive = new \rex_select();
-$selActive->setId('securit_error_notification_status');
+$selActive->setId('security_error_notification_status');
 $selActive->setName('error_notification_status');
 $selActive->setSize(1);
 $selActive->setAttribute('class', 'form-control selectpicker');
@@ -35,7 +35,7 @@ foreach ([0 => $addon->i18n('disabled'), 1 => $addon->i18n('enabled')] as $i => 
 }
 
 $n = [];
-$n['label'] = '<label for="securit_error_notification_status">' . rex_escape($this->i18n('error_notification')) . '</label>';
+$n['label'] = '<label for="security_error_notification_status">' . rex_escape($this->i18n('error_notification')) . '</label>';
 $n['field'] = $selActive->get();
 $formElements[] = $n;
 
@@ -55,21 +55,21 @@ $n['field'] = '<input class="form-control" id="error_notification_key" type="tex
 $formElements[] = $n;
 
 $selActive = new \rex_select();
-$selActive->setId('securit_error_notification_package');
+$selActive->setId('security_error_notification_package');
 $selActive->setName('error_notification_package');
 $selActive->setSize(1);
 $selActive->setAttribute('class', 'form-control selectpicker');
 $selActive->setSelected($addon->getConfig('error_notification_package'));
 foreach ([
-    0 => $addon->i18n('securit_direct_email'),
-    1 => $addon->i18n('securit_bundle_email'),
+    0 => $addon->i18n('security_direct_email'),
+    1 => $addon->i18n('security_bundle_email'),
 ] as $i => $type) {
     $selActive->addOption($type, $i);
 }
 
 $n = [];
-$n['label'] = '<label for="securit_error_notification_package">' . rex_escape($this->i18n('error_notification_package')) . '</label>';
-$n['field'] = $selActive->get().'<p class="help-block rex-note">' . rex_escape(\rex_i18n::rawMsg('securit_error_notification_package_notice')) . '</p>';
+$n['label'] = '<label for="security_error_notification_package">' . rex_escape($this->i18n('error_notification_package')) . '</label>';
+$n['field'] = $selActive->get().'<p class="help-block rex-note">' . rex_escape(\rex_i18n::rawMsg('security_error_notification_package_notice')) . '</p>';
 $formElements[] = $n;
 
 $n = [];
@@ -92,7 +92,7 @@ $content = '
 
 $fragment = new \rex_fragment();
 $fragment->setVar('class', 'edit');
-$fragment->setVar('title', $this->i18n('securit_settings'));
+$fragment->setVar('title', $this->i18n('security_settings'));
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');
 
@@ -108,7 +108,7 @@ $formElements = [];
 
 $n = [];
 $n['label'] = '<label for="error_notification_log">'.$this->i18n('log').'</label>';
-$n['field'] = '<div>'.$this->i18n('log_info', \count(ErrorNotification::getLogFiles()), \rex_addon::get('securit')->getDataPath('error_notifications')).'</div>';
+$n['field'] = '<div>'.$this->i18n('log_info', \count(ErrorNotification::getLogFiles()), \rex_addon::get('security')->getDataPath('error_notifications')).'</div>';
 $formElements[] = $n;
 
 $n = [];
@@ -131,6 +131,6 @@ $content = '
 
 $fragment = new \rex_fragment();
 $fragment->setVar('class', 'edit');
-$fragment->setVar('title', $this->i18n('securit_settings'));
+$fragment->setVar('title', $this->i18n('security_settings'));
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');

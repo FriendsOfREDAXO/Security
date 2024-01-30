@@ -1,6 +1,6 @@
 <?php
 
-namespace FriendsOfRedaxo\Securit;
+namespace FriendsOfRedaxo\Security;
 
 final class BackendUserLog
 {
@@ -92,7 +92,7 @@ final class BackendUserLog
 
     public static function activate(): void
     {
-        $addon = \rex_addon::get('securit');
+        $addon = \rex_addon::get('security');
         if ($addon->isAvailable()) {
             $addon->setConfig('be_user_log', 1);
             self::$active = true;
@@ -101,7 +101,7 @@ final class BackendUserLog
 
     public static function deactivate(): void
     {
-        $addon = \rex_addon::get('securit');
+        $addon = \rex_addon::get('security');
         if ($addon->isAvailable()) {
             $addon->setConfig('be_user_log', 0);
             self::$active = false;
@@ -111,7 +111,7 @@ final class BackendUserLog
     public static function isActive(): bool
     {
         if (null === self::$active) {
-            $addon = \rex_addon::get('securit');
+            $addon = \rex_addon::get('security');
             if ($addon->isAvailable()) {
                 self::$active = 1 === $addon->getConfig('be_user_log');
             }
@@ -122,7 +122,7 @@ final class BackendUserLog
 
     public static function logFolder(): string
     {
-        return \rex_path::addonData('securit', 'be_user');
+        return \rex_path::addonData('security', 'be_user');
     }
 
     public static function logFile(): string

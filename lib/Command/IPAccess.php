@@ -1,6 +1,6 @@
 <?php
 
-namespace FriendsOfRedaxo\Securit\Command;
+namespace FriendsOfRedaxo\Security\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * usage.
  *
- *  bin/console securit:ip_access -help
+ *  bin/console security:ip_access -help
  */
 final class IPAccess extends \rex_console_command
 {
@@ -21,7 +21,7 @@ final class IPAccess extends \rex_console_command
     protected function configure(): void
     {
         $this
-            ->setDescription('securit IP Access Init Process')
+            ->setDescription('security IP Access Init Process')
             ->addOption('add', 'a', InputOption::VALUE_OPTIONAL, 'add ip address', 'none')
             ->addOption('list', 'l', InputOption::VALUE_OPTIONAL, 'list ip addresses, type and envirement', 'none')
             ->addOption('delete', 'd', InputOption::VALUE_OPTIONAL, 'list ip address by id', 'none')
@@ -31,9 +31,9 @@ final class IPAccess extends \rex_console_command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = $this->getStyle($input, $output);
-        $io->title('securit IP Access');
+        $io->title('security IP Access');
 
-        $table = \rex_yform_manager_table::get(\FriendsOfRedaxo\Securit\IPAccess::table_name);
+        $table = \rex_yform_manager_table::get(\FriendsOfRedaxo\Security\IPAccess::table_name);
 
         if (!$table) {
             $io->warning('table not found');
@@ -121,7 +121,7 @@ final class IPAccess extends \rex_console_command
 
             if (0 == \count($dataset->getMessages())) {
                 $io->success('ip added');
-                \FriendsOfRedaxo\Securit\IPAccess::getConfig(true);
+                \FriendsOfRedaxo\Security\IPAccess::getConfig(true);
             } else {
                 $io->error(print_r($dataset->getMessages(), true));
             }
@@ -129,7 +129,7 @@ final class IPAccess extends \rex_console_command
 
         if ('none' !== $input->getOption('delete')) {
             $id_to_be_deleted = $io->ask('id to be deleted', '', static function ($id) {
-                $table = \rex_yform_manager_table::get(\FriendsOfRedaxo\Securit\IPAccess::table_name);
+                $table = \rex_yform_manager_table::get(\FriendsOfRedaxo\Security\IPAccess::table_name);
                 if (!$table) {
                     return '';
                 }
@@ -149,7 +149,7 @@ final class IPAccess extends \rex_console_command
                 ->find()
                 ->delete();
 
-            \FriendsOfRedaxo\Securit\IPAccess::getConfig(true);
+            \FriendsOfRedaxo\Security\IPAccess::getConfig(true);
 
             $io->success('id deleted');
         }
