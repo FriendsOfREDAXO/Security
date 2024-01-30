@@ -11,7 +11,7 @@ $currentDomain = \rex_yrewrite::getCurrentDomain();
 // HTTPS
 $content = [];
 if ('https' == substr($currentDomain->getUrl(), 0, 5)) {
-    $content[] = \rex_view::info(\rex_i18n::msg('security_fe_https_ok'));
+    $content[] = \rex_view::success(\rex_i18n::msg('security_fe_https_ok'));
 } else {
     $content[] = \rex_view::error(\rex_i18n::msg('security_fe_https_warning'));
 }
@@ -39,56 +39,69 @@ foreach (['frontend', 'frontendredaxo', 'backend'] as $envirement) {
     }
     $content = [];
 
-    $header = [];
+    $fileHeaders = get_headers($file);
+    if (false === $fileHeaders) {
+        $content[] = \rex_view::error(\rex_i18n::msg('security_header_not_found', $file));
 
-    foreach (get_headers($file) as $item) {
-        $headerParts = explode(':', $item);
-        if (\count($headerParts) > 1) {
-            $headerName = trim($headerParts[0]);
-            $headerValue = trim($headerParts[1]);
-            $header[$headerName] = $headerValue;
+    } else {
+        $header = [];
+        foreach (get_headers($file) as $item) {
+            $headerParts = explode(':', $item, 2);
+            if (\count($headerParts) > 1) {
+                $headerName = strtolower(trim($headerParts[0]));
+                $headerValue = trim($headerParts[1]);
+                $header[$headerName] = $headerValue;
+            }
         }
-    }
 
-    $type = 'Strict-Transport-security';
-    if (isset($header['Strict-Transport-security'])) {
-        $content[] = \rex_view::success(\rex_i18n::msg('security_sts_fe_header_found', $header[$type]));
-        // TODO und Check: Info über die Dauer der HSTS
-        // Info über preload
-    } else {
-        $content[] = \rex_view::error(\rex_i18n::msg('security_sts_fe_header_missing'));
-    }
+        $type = 'Strict-Transport-Security';
+        if (isset($header[strtolower($type)])) {
+            $content[] = \rex_view::success(\rex_i18n::msg('security_sts_fe_header_found', $header[strtolower($type)]));
+            // TODO und Check: Info über die Dauer der HSTS
+            // Info über preload
+        } else {
+            $content[] = \rex_view::error(\rex_i18n::msg('security_sts_fe_header_missing'));
+        }
 
-    $type = 'Referrer-Policy';
-    if (isset($header[$type])) {
-        $content[] = \rex_view::success(\rex_i18n::msg('security_rp_fe_header_found', $header[$type]));
-        // TODO und Check: same-origin
-    } else {
-        $content[] = \rex_view::error(\rex_i18n::msg('security_rp_fe_header_missing'));
-    }
+        $type = 'Referrer-Policy';
+        if (isset($header[strtolower($type)])) {
+            $content[] = \rex_view::success(\rex_i18n::msg('security_rp_fe_header_found', $header[strtolower($type)]));
+            // TODO und Check: same-origin
+        } else {
+            $content[] = \rex_view::error(\rex_i18n::msg('security_rp_fe_header_missing'));
+        }
 
-    $type = 'X-XSS-Protection';
-    if (isset($header[$type])) {
-        $content[] = \rex_view::info(\rex_i18n::msg('security_xss_fe_header_found', $header[$type]));
-        // TODO: Erklärung
-    } else {
-        $content[] = \rex_view::info(\rex_i18n::msg('security_xss_fe_header_missing'));
-    }
+        $type = 'X-XSS-Protection';
+        if (isset($header[strtolower($type)])) {
+            $content[] = \rex_view::info(\rex_i18n::msg('security_xss_fe_header_found', $header[strtolower($type)]));
+            // TODO: Erklärung
+        } else {
+            $content[] = \rex_view::info(\rex_i18n::msg('security_xss_fe_header_missing'));
+        }
 
-    $type = 'X-Content-Type-Options';
-    if (isset($header[$type])) {
-        $content[] = \rex_view::success(\rex_i18n::msg('security_cto_fe_header_found', $header[$type]));
-        // TODO: Erklärung
-    } else {
-        $content[] = \rex_view::error(\rex_i18n::msg('security_cto_fe_header_missing'));
-    }
+        $type = 'X-Content-Type-Options';
+        if (isset($header[strtolower($type)])) {
+            $content[] = \rex_view::success(\rex_i18n::msg('security_cto_fe_header_found', $header[strtolower($type)]));
+            // TODO: Erklärung
+        } else {
+            $content[] = \rex_view::error(\rex_i18n::msg('security_cto_fe_header_missing'));
+        }
 
-    $type = 'X-Frame-Options';
-    if (isset($header[$type])) {
-        $content[] = \rex_view::success(\rex_i18n::msg('security_fo_fe_header_found', $header[$type]));
-        // TODO: Erklärung
-    } else {
-        $content[] = \rex_view::error(\rex_i18n::msg('security_fo_fe_header_missing'));
+        $type = 'X-Frame-Options';
+        if (isset($header[strtolower($type)])) {
+            $content[] = \rex_view::success(\rex_i18n::msg('security_fo_fe_header_found', $header[strtolower($type)]));
+            // TODO: Erklärung
+        } else {
+            $content[] = \rex_view::error(\rex_i18n::msg('security_fo_fe_header_missing'));
+        }
+
+        $type = 'Content-Security-Policy';
+        if (isset($header[strtolower($type)])) {
+            $content[] = \rex_view::info(\rex_i18n::msg('security_csp_fe_header_found'));
+            $content[] = '<pre>'.$header[strtolower($type)].'</pre>';
+            // TODO: Erklärung
+        }
+
     }
 
     $fragment = new \rex_fragment();

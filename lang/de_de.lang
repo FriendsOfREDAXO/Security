@@ -95,6 +95,7 @@ security_cto_fe_header_missing = `X-Content-Type-Options` wurde nicht gefunden
 security_cto_fe_header_found = `X-Content-Type-Options` wurde gefunden. Mit folgenden Einstellungen: `{0}`
 security_fo_fe_header_missing = `X-Frame-Options` wurde nicht gefunden
 security_fo_fe_header_found = `X-Frame-Options` wurde gefunden. Mit folgenden Einstellungen: `{0}`
+security_csp_fe_header_found = `Content-Security-Policy` wurde gefunden.
 
 security_header_title_frontend = Aufruf einer statischen Datei `{0}`
 security_header_title_frontendredaxo = Aufruf des Frontends (läuft über REDAXO) `{0}`
@@ -105,3 +106,5 @@ security_header_webserver_info = Webserver Information
 
 security_backend_nonce_inactive = BackendNonce ist inaktiv. Wir empfehlen es nur zu aktivieren, wenn man das Backend extrem sicher nutzen will. Nicht alle AddOns sind entsprechend angepasst. <a href="{0}">aktivieren</a>
 security_backend_nonce_active  = BackendNonce ist aktiv. <a href="{0}">deaktivieren</a>
+security_header_not_found = Header konnten nicht geladen werden. URL vielleicht https und Zertifkat ist abgelaufen oder falsch?
+
