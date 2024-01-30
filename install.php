@@ -1,5 +1,4 @@
 <?php
-$addon = rex_addon::get('securit');
 $config_file = rex_path::coreData('config.yml');
 $data = rex_file::getConfig($config_file);
 if (!in_array('securit', $data['setup_addons'], true)) {
