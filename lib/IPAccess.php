@@ -5,7 +5,7 @@ namespace FriendsOfRedaxo\Security;
 final class IPAccess
 {
     /**
-     * @var class-string<\FriendsOfRedaxo\Security\IPAccess>
+     * @var string
      */
     public const table_name = 'rex_security_ip_access';
 
@@ -64,7 +64,7 @@ final class IPAccess
         return $binaryip;
     }
 
-    public static function getStatus($user_ip)
+    public static function getStatus(string $user_ip): bool
     {
         $config = self::getConfig(true);
 
@@ -141,6 +141,9 @@ final class IPAccess
         return true;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function getConfig(bool $refresh_load = false): array
     {
         $filename = \rex_addon::get('security')->getDataPath(self::config_name);
@@ -154,6 +157,9 @@ final class IPAccess
         return $config;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function loadConfig(): array
     {
         $table = \rex_yform_manager_table::get(self::table_name);
@@ -231,6 +237,10 @@ final class IPAccess
         return $ip;
     }
 
+    /**
+     * @param string[] $ip_array
+     * @return string[]
+     */
     public static function addIP(array $ip_array): array
     {
         $table = \rex_yform_manager_table::get(self::table_name);
@@ -247,7 +257,7 @@ final class IPAccess
         return $ds->getMessages();
     }
 
-    public static function isActive($envirement = 'frontend')
+    public static function isActive(string $envirement = 'frontend'): bool
     {
         $config = self::getConfig();
 

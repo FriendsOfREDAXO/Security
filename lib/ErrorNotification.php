@@ -80,6 +80,9 @@ final class ErrorNotification extends \rex_error_handler
         parent::handleException($exception);
     }
 
+    /**
+     * @return array<int, string>
+     */
     public static function getLogFiles(): array
     {
         $log_files = scandir(\rex_addon::get('security')->getDataPath('error_notification'));

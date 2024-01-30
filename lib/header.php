@@ -19,13 +19,16 @@ namespace FriendsOfRedaxo\Security;
 
 final class Header
 {
-    private static $NonceActive;
+    private static ?bool $NonceActive = null;
 
     public static function init(): void
     {
         self::send();
     }
 
+    /**
+     * @param array<string, mixed> $CSPArray
+     */
     private static function buildCSPHeader(array $CSPArray): string
     {
         $Value = [];
@@ -36,6 +39,9 @@ final class Header
         return implode(' ', $Value);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public static function getHeader(bool $ignoreNonce = false): array
     {
         $header = [];
