@@ -1,16 +1,10 @@
 <?php
 $addon = rex_addon::get('securit');
-
-// Write securit to setup addOns system config
 $config_file = rex_path::coreData('config.yml');
-$config = rex_file::get($config_file);
-if ($config !== null) {
-    $data = rex_string::yamlDecode($config);
-    if (in_array("securit", $data['setup_addons'], true)) {
-    } else {
-        $data['setup_addons'][] = 'securit';
-        rex_file::put($config_file, rex_string::yamlEncode($data, 3));
-    }
+$data = rex_file::getConfig($config_file);
+if (!in_array('securit', $data['setup_addons'], true)) {
+    $data['setup_addons'][] = 'securit';
+    rex_file::putConfig($config_file, $data);
 }
 
 rex_yform_manager_table::deleteCache();
