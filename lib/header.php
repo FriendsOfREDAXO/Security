@@ -48,21 +48,30 @@ final class Header
         $header['Content-security-Policy'] = [
             'default-src' => [
                 "'self'",
-                'https://www.youtube-nocookie.com',
+                'https://www.youtube.com',
                 'https://www.w3.org/2000/svg',
+                'data:',
             ],
-            'base-uri' => ["'self'"],
-            'img-src' => ["'self'", 'data:'],
+            'base-uri' => [
+                "'self'"
+            ],
+            'img-src' => [
+                "'self'",
+                'data:'
+            ],
             'script-src' => [
                 "'self'",
             ],
             'style-src' => [
                 "'self'",
-            ], // , "'unsafe-inline'" "*", "'self'", "'nonce-".self::$nonce."'",
-            'object-src' => ["'none'"],
-            //            'frame-ancestors' => ["'self'"],
-            //            'form-action' => ["'self'"], // 'none'
-            //        connect-src
+                // "'unsafe-inline'",
+            ],
+            'object-src' => [
+                "'none'"
+            ],
+            // 'frame-ancestors' => ["'self'"],
+            // 'form-action' => ["'self'"], // 'none'
+            // connect-src
             // font-src
             // frame-src
             // manifest-src
