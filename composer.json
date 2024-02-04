@@ -6,5 +6,8 @@
     "scripts": {
         "cs-dry": "php-cs-fixer fix -v --ansi --dry-run --config=.php-cs-fixer.dist.php",
         "cs-fix": "php-cs-fixer fix -v --ansi --config=.php-cs-fixer.dist.php"
+    },
+    "replace": {
+        "psr/log": "*"
     }
 }
