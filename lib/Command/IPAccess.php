@@ -2,16 +2,23 @@
 
 namespace FriendsOfRedaxo\Security\Command;
 
+use InvalidArgumentException;
+use rex_console_command;
+use rex_yform_manager_table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use function count;
+
+use const STR_PAD_LEFT;
 
 /**
  * usage.
  *
  *  bin/console security:ip_access -help
  */
-final class IPAccess extends \rex_console_command
+final class IPAccess extends rex_console_command
 {
     public function __construct()
     {
@@ -33,7 +40,7 @@ final class IPAccess extends \rex_console_command
         $io = $this->getStyle($input, $output);
         $io->title('security IP Access');
 
-        $table = \rex_yform_manager_table::get(\FriendsOfRedaxo\Security\IPAccess::table_name);
+        $table = rex_yform_manager_table::get(\FriendsOfRedaxo\Security\IPAccess::table_name);
 
         if (!$table) {
             $io->warning('table not found');
@@ -43,19 +50,19 @@ final class IPAccess extends \rex_console_command
         if ('none' !== $input->getOption('list')) {
             $items = $table->query();
             $io->text(
-                str_pad('id', 5, ' ', STR_PAD_LEFT).
-                    str_pad('environment', 15, ' ', STR_PAD_LEFT).
-                    str_pad('type', 10, ' ', STR_PAD_LEFT).
-                    str_pad('ip', 25, ' ', STR_PAD_LEFT).
-                    str_pad('comment', 30, ' ', STR_PAD_LEFT)
+                str_pad('id', 5, ' ', STR_PAD_LEFT) .
+                    str_pad('environment', 15, ' ', STR_PAD_LEFT) .
+                    str_pad('type', 10, ' ', STR_PAD_LEFT) .
+                    str_pad('ip', 25, ' ', STR_PAD_LEFT) .
+                    str_pad('comment', 30, ' ', STR_PAD_LEFT),
             );
             foreach ($items as $item) {
                 $io->text(
-                    str_pad((string) $item->getId(), 5, ' ', STR_PAD_LEFT).
-                        str_pad($item->getValue('environment'), 15, ' ', STR_PAD_LEFT).
-                        str_pad($item->getValue('type'), 10, ' ', STR_PAD_LEFT).
-                        str_pad($item->getValue('ip'), 25, ' ', STR_PAD_LEFT).
-                        str_pad($item->getValue('comment'), 30, ' ', STR_PAD_LEFT)
+                    str_pad((string) $item->getId(), 5, ' ', STR_PAD_LEFT) .
+                        str_pad($item->getValue('environment'), 15, ' ', STR_PAD_LEFT) .
+                        str_pad($item->getValue('type'), 10, ' ', STR_PAD_LEFT) .
+                        str_pad($item->getValue('ip'), 25, ' ', STR_PAD_LEFT) .
+                        str_pad($item->getValue('comment'), 30, ' ', STR_PAD_LEFT),
                 );
             }
 
@@ -72,10 +79,10 @@ final class IPAccess extends \rex_console_command
                     return $environment;
                 }
 
-                throw new \InvalidArgumentException('backend or frontend?');
+                throw new InvalidArgumentException('backend or frontend?');
             });
 
-            $io->text('environment: '.$environment);
+            $io->text('environment: ' . $environment);
 
             $type = $io->ask('type', 'allow', static function ($allow) {
                 if ('allow' == $allow) {
@@ -86,30 +93,30 @@ final class IPAccess extends \rex_console_command
                     return $allow;
                 }
 
-                throw new \InvalidArgumentException('allow or block?');
+                throw new InvalidArgumentException('allow or block?');
             });
 
-            $io->text('type: '.$type);
+            $io->text('type: ' . $type);
 
             $ip = $io->ask('ip or ip range. Format: x.x.x.x/xx or x.x.x.x-y.y.y.y', '', static function ($ip) {
                 if ('' == $ip) {
-                    throw new \InvalidArgumentException('please enter ip or ip range');
+                    throw new InvalidArgumentException('please enter ip or ip range');
                 }
 
                 return $ip;
             });
 
-            $io->text('ip/range: '.$ip);
+            $io->text('ip/range: ' . $ip);
 
             $comment = $io->ask('comment', '', static function ($comment) {
                 if ('' == $comment) {
-                    throw new \InvalidArgumentException('please enter a comment/description');
+                    throw new InvalidArgumentException('please enter a comment/description');
                 }
 
                 return $comment;
             });
 
-            $io->text('comment: '.$comment);
+            $io->text('comment: ' . $comment);
 
             $dataset = $table->createDataset()
                 ->setValue('environment', $environment)
@@ -119,7 +126,7 @@ final class IPAccess extends \rex_console_command
             $dataset
                 ->save();
 
-            if (0 == \count($dataset->getMessages())) {
+            if (0 == count($dataset->getMessages())) {
                 $io->success('ip added');
                 \FriendsOfRedaxo\Security\IPAccess::getConfig(true);
             } else {
@@ -129,7 +136,7 @@ final class IPAccess extends \rex_console_command
 
         if ('none' !== $input->getOption('delete')) {
             $id_to_be_deleted = $io->ask('id to be deleted', '', static function ($id) {
-                $table = \rex_yform_manager_table::get(\FriendsOfRedaxo\Security\IPAccess::table_name);
+                $table = rex_yform_manager_table::get(\FriendsOfRedaxo\Security\IPAccess::table_name);
                 if (!$table) {
                     return '';
                 }
@@ -137,8 +144,8 @@ final class IPAccess extends \rex_console_command
                 $items = $table->query()
                     ->where('id', $id)
                     ->find();
-                if (1 != \count($items)) {
-                    throw new \InvalidArgumentException('id not found');
+                if (1 != count($items)) {
+                    throw new InvalidArgumentException('id not found');
                 }
 
                 return $id;

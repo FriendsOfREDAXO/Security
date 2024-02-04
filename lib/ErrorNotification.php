@@ -3,46 +3,61 @@
 namespace FriendsOfRedaxo\Security;
 
 use Exception;
+use rex;
+use rex_addon;
+use rex_config;
+use rex_error_handler;
+use rex_file;
+use rex_mailer;
+use rex_markdown;
+use rex_path;
+use rex_request;
+use rex_response;
+use rex_system_report;
+use Throwable;
 
-final class ErrorNotification extends \rex_error_handler
+use function array_slice;
+use function count;
+use function is_array;
+
+use const PHP_EOL;
+use const PHP_SAPI;
+
+final class ErrorNotification extends rex_error_handler
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     public const email_name = 'security Info';
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private const HEADERS = ['Function', 'File', 'Line'];
 
     public static function init(): void
     {
-        if (1 != \rex_config::get('security', 'error_notification_status')) {
+        if (1 != rex_config::get('security', 'error_notification_status')) {
             return;
         }
 
         set_exception_handler(/**
          * @throws \PHPMailer\PHPMailer\Exception
-         */ static function (\PHPMailer\PHPMailer\Exception|\Throwable $exception) {
+         */ static function (\PHPMailer\PHPMailer\Exception|Throwable $exception) {
             self::handleException($exception);
         });
     }
 
     public static function getEMail(): string
     {
-        return empty(\rex_config::get('security', 'error_notification_email')) ? \rex::getErrorEmail() : (string) \rex_config::get('security', 'error_notification_email');
+        return empty(rex_config::get('security', 'error_notification_email')) ? rex::getErrorEmail() : (string) rex_config::get('security', 'error_notification_email');
     }
 
     public static function getName(): string
     {
-        return empty(\rex_config::get('security', 'error_notification_name')) ? self::email_name : (string) \rex_config::get('security', 'error_notification_email');
+        return empty(rex_config::get('security', 'error_notification_name')) ? self::email_name : (string) rex_config::get('security', 'error_notification_email');
     }
 
     /**
      * Handles the given Exception.
      *
-     * @param \Throwable|\Exception $exception The Exception to handle
+     * @param Throwable|Exception $exception The Exception to handle
      * @throws \PHPMailer\PHPMailer\Exception
      */
     public static function handleException($exception): void
@@ -61,20 +76,20 @@ final class ErrorNotification extends \rex_error_handler
         $bugBodyCompressed = (string) preg_replace('/ +/', ' ', $bugBody);
         $markdown_whoops = $bugBodyCompressed;
 
-        if ('0' == \rex_config::get('security', 'error_notification_package')) {
+        if ('0' == rex_config::get('security', 'error_notification_package')) {
             // direct email
-            $mail = new \rex_mailer();
+            $mail = new rex_mailer();
             $mail->AddAddress(self::getEMail(), self::getName());
             $mail->Subject = 'security - Error: Reporting ' . $exception->getMessage();
-            $mail->MsgHTML(\rex_markdown::factory()->parse($markdown_whoops, true));
+            $mail->MsgHTML(rex_markdown::factory()->parse($markdown_whoops, true));
             $mail->AltBody = $markdown_whoops;
             if (!$mail->Send()) {
                 // Mail failed - log Exception
-                \rex_file::put(\rex_addon::get('security')->getDataPath('error_notification/'.time().'.log.md'), $markdown_whoops);
+                rex_file::put(rex_addon::get('security')->getDataPath('error_notification/' . time() . '.log.md'), $markdown_whoops);
             }
-        } elseif ('1' == \rex_config::get('security', 'error_notification_package')) {
+        } elseif ('1' == rex_config::get('security', 'error_notification_package')) {
             // log - bundle for action
-            \rex_file::put(\rex_addon::get('security')->getDataPath('error_notification/'.time().'.log.md'), $markdown_whoops);
+            rex_file::put(rex_addon::get('security')->getDataPath('error_notification/' . time() . '.log.md'), $markdown_whoops);
         }
 
         parent::handleException($exception);
@@ -85,8 +100,8 @@ final class ErrorNotification extends \rex_error_handler
      */
     public static function getLogFiles(): array
     {
-        $log_files = scandir(\rex_addon::get('security')->getDataPath('error_notification'));
-        if (!\is_array($log_files)) {
+        $log_files = scandir(rex_addon::get('security')->getDataPath('error_notification'));
+        if (!is_array($log_files)) {
             $log_files = [];
         }
 
@@ -96,7 +111,7 @@ final class ErrorNotification extends \rex_error_handler
     public static function deleteLogFiles(): void
     {
         foreach (self::getLogFiles() as $file) {
-            \rex_file::delete(\rex_addon::get('security')->getDataPath('error_notification/'.$file));
+            rex_file::delete(rex_addon::get('security')->getDataPath('error_notification/' . $file));
         }
     }
 
@@ -104,12 +119,12 @@ final class ErrorNotification extends \rex_error_handler
     {
         $content = [];
         foreach (self::getLogFiles() as $file) {
-            $content[] = \rex_file::get(\rex_addon::get('security')->getDataPath('error_notification/'.$file));
+            $content[] = rex_file::get(rex_addon::get('security')->getDataPath('error_notification/' . $file));
         }
 
         $fileName = 'security_logs_' . date('YmdHis') . '.log';
         header('Content-Disposition: attachment; filename="' . $fileName . '"; charset=utf-8');
-        \rex_response::sendContent(implode("\n\n\n\n\n\n-----\n\n\n\n\n\n", $content), 'application/octetstream');
+        rex_response::sendContent(implode("\n\n\n\n\n\n-----\n\n\n\n\n\n", $content), 'application/octetstream');
     }
 
     /**
@@ -122,21 +137,21 @@ final class ErrorNotification extends \rex_error_handler
         $sendfiles = [];
 
         if ([] !== $files) {
-            foreach (\array_slice($files, 0, 20) as $file) {
+            foreach (array_slice($files, 0, 20) as $file) {
                 $parts = preg_split('#[.]#', $file);
                 if ($parts[0] > $fromtime) {
                     $sendfiles[] = $file;
                 }
             }
 
-            if (0 < \count($sendfiles)) {
-                $mail = new \rex_mailer();
+            if (0 < count($sendfiles)) {
+                $mail = new rex_mailer();
                 $mail->AddAddress(self::getEMail(), self::getName());
                 $mail->Subject = 'security - Error: Bundle-Reporting';
                 $mail->MsgHTML('security - Error: Bundle-Reporting');
                 $mail->AltBody = 'security - Error: Bundle-Reporting';
                 foreach ($sendfiles as $sendfile) {
-                    $mail->addAttachment(\rex_addon::get('security')->getDataPath('error_notification/' . $sendfile));
+                    $mail->addAttachment(rex_addon::get('security')->getDataPath('error_notification/' . $sendfile));
                 }
 
                 try {
@@ -153,22 +168,22 @@ final class ErrorNotification extends \rex_error_handler
         return true;
     }
 
-    private static function getMarkdownReport(\Throwable|\Exception $exception): string
+    private static function getMarkdownReport(Throwable|Exception $exception): string
     {
-        $file = \rex_path::relative($exception->getFile());
+        $file = rex_path::relative($exception->getFile());
 
         $markdown = "\n##Error Report:\n\n";
-        $markdown .= '| Key | Value |'.PHP_EOL;
-        $markdown .= '| --- | --- |'.PHP_EOL;
-        $markdown .= '| **key:** | '.\rex_config::get('security', 'error_notification_key').' |'.PHP_EOL;
-        $markdown .= '| **unixtime with microtime:** | '.microtime(true)." |\n";
-        $markdown .= '| **'.$exception::class.":** | {$exception->getMessage()} |\n";
+        $markdown .= '| Key | Value |' . PHP_EOL;
+        $markdown .= '| --- | --- |' . PHP_EOL;
+        $markdown .= '| **key:** | ' . rex_config::get('security', 'error_notification_key') . ' |' . PHP_EOL;
+        $markdown .= '| **unixtime with microtime:** | ' . microtime(true) . " |\n";
+        $markdown .= '| **' . $exception::class . ":** | {$exception->getMessage()} |\n";
         $markdown .= "| **File:** | $file |\n";
         $markdown .= "| **Line:** | {$exception->getLine()} |\n";
         if (rex_server('REQUEST_URI')) {
             $markdown .=
-                '| **Request-Uri:** | ' . rex_server('REQUEST_URI')." |\n".
-                '| **Request-Method:** | ' . strtoupper(\rex_request::requestMethod()) ." |\n";
+                '| **Request-Uri:** | ' . rex_server('REQUEST_URI') . " |\n" .
+                '| **Request-Method:** | ' . strtoupper(rex_request::requestMethod()) . " |\n";
         }
 
         $trace = [];
@@ -177,10 +192,10 @@ final class ErrorNotification extends \rex_error_handler
         foreach ($exception->getTrace() as $frame) {
             $function = $frame['function'];
             if (isset($frame['class'])) {
-                $function = $frame['class'].$frame['type'].$function;
+                $function = $frame['class'] . $frame['type'] . $function;
             }
 
-            $file = isset($frame['file']) ? \rex_path::relative($frame['file']) : '';
+            $file = isset($frame['file']) ? rex_path::relative($frame['file']) : '';
             $line = $frame['line'] ?? '';
 
             $trace[] = [$function, $file, $line];
@@ -190,21 +205,21 @@ final class ErrorNotification extends \rex_error_handler
             $widths[2] = max($widths[2], mb_strlen($line));
         }
 
-        $table = '| '.str_pad(self::HEADERS[0], $widths[0]).' | '.str_pad(self::HEADERS[1], $widths[1]).' | '.str_pad(self::HEADERS[2], $widths[2])." |\n";
-        $table .= '| '.str_repeat('-', $widths[0]).' | '.str_repeat('-', $widths[1]).' | '.str_repeat('-', $widths[2])." |\n";
+        $table = '| ' . str_pad(self::HEADERS[0], $widths[0]) . ' | ' . str_pad(self::HEADERS[1], $widths[1]) . ' | ' . str_pad(self::HEADERS[2], $widths[2]) . " |\n";
+        $table .= '| ' . str_repeat('-', $widths[0]) . ' | ' . str_repeat('-', $widths[1]) . ' | ' . str_repeat('-', $widths[2]) . " |\n";
 
         foreach ($trace as $row) {
-            $table .= '| '.str_pad($row[0], $widths[0]).' | '.str_pad($row[1], $widths[1]).' | '.str_pad($row[2], $widths[2])." |\n";
+            $table .= '| ' . str_pad($row[0], $widths[0]) . ' | ' . str_pad($row[1], $widths[1]) . ' | ' . str_pad($row[2], $widths[2]) . " |\n";
         }
 
-        $markdown .= "\n".<<<OUTPUT
+        $markdown .= "\n" . <<<OUTPUT
             $table
             OUTPUT;
 
-        $markdown .= strip_tags(\rex_system_report::factory()->asMarkdown());
+        $markdown .= strip_tags(rex_system_report::factory()->asMarkdown());
 
         foreach (['$_SERVER' => $_SERVER, '$_REQUEST' => $_REQUEST, '$_POST' => $_POST, '$_GET' => $_GET, '$_COOKIE' => $_COOKIE, '$_FILES' => $_FILES, '$_SESSION' => $_SESSION] as $type => $vars) {
-            $markdown .= "\n\n------------------------------------------------\n\n".$type.": \n";
+            $markdown .= "\n\n------------------------------------------------\n\n" . $type . ": \n";
             $markdown .= print_r($vars, true);
         }
 

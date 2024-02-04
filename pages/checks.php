@@ -78,7 +78,7 @@ https://googlechrome.github.io/lighthouse/viewer/?psiurl=https%3A%2F%2Fmeinedoma
 
 $content = [];
 foreach ($links as $link) {
-    $content[] = '<h3>'.(('' == $link['name']) ? $link['url'] : $link['name']).'</h3><p><a href="'.$link['url'].'">'.$link['url'].'</a></p>';
+    $content[] = '<h3>' . (('' == $link['name']) ? $link['url'] : $link['name']) . '</h3><p><a href="' . $link['url'] . '">' . $link['url'] . '</a></p>';
 }
 
 echo rex_view::content(rex_i18n::msg('security_checks_info'));
