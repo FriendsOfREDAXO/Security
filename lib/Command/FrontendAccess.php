@@ -3,18 +3,24 @@
 namespace FriendsOfRedaxo\Security\Command;
 
 use FriendsOfRedaxo\Security\FrontendAccess as FrontendAccessNoCommand;
-
+use InvalidArgumentException;
+use rex_addon;
+use rex_config;
+use rex_console_command;
+use rex_yrewrite;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+
+use function in_array;
 
 /**
  * usage.
  *
  *  bin/console security:fe_access -help
  */
-final class FrontendAccess extends \rex_console_command
+final class FrontendAccess extends rex_console_command
 {
     public function __construct()
     {
@@ -41,13 +47,13 @@ final class FrontendAccess extends \rex_console_command
             $io->text((FrontendAccessNoCommand::getStatus()) ? 'Status: active' : 'Status: inactive');
             $io->text('Frontend-Password: ' . FrontendAccessNoCommand::getPassword());
 
-            $domainIds = \rex_config::get('security', 'fe_access_domains');
+            $domainIds = rex_config::get('security', 'fe_access_domains');
 
             if ('' == $domainIds) {
                 $io->text('Domain: No domains specified!');
             } else {
                 foreach (array_map('intval', explode(',', $domainIds)) as $domainId) {
-                    $domain = \rex_yrewrite::getDomainById($domainId);
+                    $domain = rex_yrewrite::getDomainById($domainId);
                     if ($domain) {
                         $io->text('Active Domain: ' . $domain->getUrl());
                     }
@@ -75,15 +81,15 @@ final class FrontendAccess extends \rex_console_command
 
         if ('none' !== $input->getOption('set-domains')) {
             $domains = [];
-            foreach (\rex_yrewrite::getDomains() as $domain) {
+            foreach (rex_yrewrite::getDomains() as $domain) {
                 $domains[] = $domain->getUrl();
             }
 
             $defaultKeys = [];
 
-            $domainIds = \rex_config::get('security', 'fe_access_domains');
+            $domainIds = rex_config::get('security', 'fe_access_domains');
             foreach (array_map('intval', explode(',', (string) @$domainIds)) as $activeDomainId) {
-                $activeDomain = \rex_yrewrite::getDomainById($activeDomainId);
+                $activeDomain = rex_yrewrite::getDomainById($activeDomainId);
                 if ($activeDomain) {
                     foreach ($domains as $domainKey => $domain) {
                         if ($activeDomain->getUrl() == $domain) {
@@ -104,22 +110,25 @@ final class FrontendAccess extends \rex_console_command
             $selectedDomains = $helper->ask($input, $output, $question);
 
             $domainIds = [];
-            foreach (\rex_yrewrite::getDomains() as $domain) {
-                if (\in_array($domain->getUrl(), $selectedDomains, true)) {
+            foreach (rex_yrewrite::getDomains() as $domain) {
+                if (in_array($domain->getUrl(), $selectedDomains, true)) {
                     $domainIds[] = $domain->getId();
                 }
             }
 
-            \rex_addon::get('security')
+            rex_addon::get('security')
                 ->setConfig('fe_access_domains', implode(',', $domainIds));
 
             $io->success('your selection has been saved');
         }
 
         if ('none' !== $input->getOption('set-password')) {
-            $password = $io->ask('enter password: ', md5((string) time()), static function ($password) {
+            $bytes = openssl_random_pseudo_bytes(8);
+            $defaultPassword = bin2hex($bytes);
+
+            $password = $io->ask('enter password: ', $defaultPassword, static function ($password) {
                 if ('' == $password) {
-                    throw new \InvalidArgumentException('please enter a passwort');
+                    throw new InvalidArgumentException('please enter a passwort');
                 }
 
                 return $password;
