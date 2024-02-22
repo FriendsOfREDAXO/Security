@@ -123,8 +123,8 @@ final class FrontendAccess extends rex_console_command
         }
 
         if ('none' !== $input->getOption('set-password')) {
-            $bytes = openssl_random_pseudo_bytes(8);
-            $defaultPassword = bin2hex($bytes);
+            $bytes = random_bytes(12);
+            $defaultPassword = rtrim(strtr(base64_encode($bytes), '+/', '-_'), '=');
 
             $password = $io->ask('enter password: ', $defaultPassword, static function ($password) {
                 if ('' == $password) {
