@@ -9,6 +9,7 @@ requires:
     packages:
         yform: '>=3.2,<5.0.0-dev'
         yrewrite: '^2.8'
+        phpmailer: '>2.12'
 
 page:
     title: 'translate:security_navi_title'
