@@ -48,6 +48,10 @@ final class BackendUserLog
 
     public static function init(): void
     {
+        if (null !== rex_request('rex-api-call', 'string', null)) {
+            return;
+        }
+
         if (!rex::isBackend()) {
             return;
         }

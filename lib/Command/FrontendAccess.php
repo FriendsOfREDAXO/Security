@@ -123,7 +123,10 @@ final class FrontendAccess extends rex_console_command
         }
 
         if ('none' !== $input->getOption('set-password')) {
-            $password = $io->ask('enter password: ', md5((string) time()), static function ($password) {
+            $bytes = random_bytes(12);
+            $defaultPassword = rtrim(strtr(base64_encode($bytes), '+/', '-_'), '=');
+
+            $password = $io->ask('enter password: ', $defaultPassword, static function ($password) {
                 if ('' == $password) {
                     throw new InvalidArgumentException('please enter a passwort');
                 }
