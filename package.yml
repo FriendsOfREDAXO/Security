@@ -36,4 +36,11 @@ console_commands:
     security:ip_access: \FriendsOfRedaxo\Security\Command\IPAccess
     security:fe_access: \FriendsOfRedaxo\Security\Command\FrontendAccess
 
+installer_ignore:
+    - .git
+    - .gitignore
+    - .github
+    - composer.json
+    - .php-cs-fixer.dist.php
+    - composer.lock
 

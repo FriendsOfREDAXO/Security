@@ -2,6 +2,10 @@
 
 namespace FriendsOfRedaxo\Security;
 
+use rex;
+use rex_addon;
+use rex_response;
+
 /**
  * https://wiki.selfhtml.org/wiki/Sicherheit/Content_security_Policy
  * https://cspvalidator.org/#url=
@@ -33,7 +37,7 @@ final class Header
     {
         $Value = [];
         foreach ($CSPArray as $src => $v) {
-            $Value[] = $src . ' ' . implode(' ', $v).';';
+            $Value[] = $src . ' ' . implode(' ', $v) . ';';
         }
 
         return implode(' ', $Value);
@@ -53,11 +57,11 @@ final class Header
                 'data:',
             ],
             'base-uri' => [
-                "'self'"
+                "'self'",
             ],
             'img-src' => [
                 "'self'",
-                'data:'
+                'data:',
             ],
             'script-src' => [
                 "'self'",
@@ -67,7 +71,7 @@ final class Header
                 // "'unsafe-inline'",
             ],
             'object-src' => [
-                "'none'"
+                "'none'",
             ],
             // 'frame-ancestors' => ["'self'"],
             // 'form-action' => ["'self'"], // 'none'
@@ -85,8 +89,8 @@ final class Header
         ];
 
         if (!$ignoreNonce) {
-            $header['Content-security-Policy']['script-src'][] = "'nonce-".\rex_response::getNonce()."'";
-            $header['Content-security-Policy']['style-src'][] = "'nonce-".\rex_response::getNonce()."'";
+            $header['Content-security-Policy']['script-src'][] = "'nonce-" . rex_response::getNonce() . "'";
+            $header['Content-security-Policy']['style-src'][] = "'nonce-" . rex_response::getNonce() . "'";
         }
 
         $header['Content-security-Policy'] = self::buildCSPHeader($header['Content-security-Policy']);
@@ -103,20 +107,20 @@ final class Header
     {
         $return = [];
         foreach (self::getHeader(true) as $name => $value) {
-            $return[] = "\t".'Header set '.$name.' "'.$value.'"';
+            $return[] = "\t" . 'Header set ' . $name . ' "' . $value . '"';
         }
 
         $return[] = '	Header unset X-Powered-By';
         $return[] = '	Header unset Server';
 
-        return '<IfModule mod_headers.c>'."\n".implode("\n", $return)."\n".'</IfModule>';
+        return '<IfModule mod_headers.c>' . "\n" . implode("\n", $return) . "\n" . '</IfModule>';
     }
 
     public static function getHeaderForNginx(): string
     {
         $return = [];
         foreach (self::getHeader(true) as $name => $value) {
-            $return[] = 'add_header '.$name.' "'.$value.'"';
+            $return[] = 'add_header ' . $name . ' "' . $value . '"';
         }
 
         return implode("\n", $return);
@@ -124,14 +128,14 @@ final class Header
 
     public static function activateBackendNonce(): void
     {
-        $addon = \rex_addon::get('security');
+        $addon = rex_addon::get('security');
         $addon->setConfig('BackendNonce', 1);
         self::$NonceActive = true;
     }
 
     public static function deactivateBackendNonce(): void
     {
-        $addon = \rex_addon::get('security');
+        $addon = rex_addon::get('security');
         $addon->setConfig('BackendNonce', 0);
         self::$NonceActive = false;
     }
@@ -139,7 +143,7 @@ final class Header
     public static function isBackendNonceActive(): bool
     {
         if (null === self::$NonceActive) {
-            $addon = \rex_addon::get('security');
+            $addon = rex_addon::get('security');
             self::$NonceActive = (1 === $addon->getConfig('BackendNonce')) ? true : false;
         }
         return (self::$NonceActive) ? true : false;
@@ -147,7 +151,7 @@ final class Header
 
     private static function send(): void
     {
-        if (\rex::isBackend() && self::isBackendNonceActive()) {
+        if (rex::isBackend() && self::isBackendNonceActive()) {
             // fürs Backend wird ein sehr viel lockereres CSP verwendet
 
             $Content_security_Policy_Header = [];
@@ -156,7 +160,7 @@ final class Header
             $Content_security_Policy_Header['base-uri'][] = "'self'";
             $Content_security_Policy_Header['object-src'][] = "'none'";
 
-            $be_login = \rex::getProperty('login');
+            $be_login = rex::getProperty('login');
             if (null == $be_login || !$be_login->getUser()) {
                 // nicht eingeloggt
                 $Content_security_Policy_Header['script-src'][] = "'unsafe-inline'";
@@ -164,15 +168,14 @@ final class Header
                 $Content_security_Policy_Header['style-src'][] = "'unsafe-inline'";
             } else {
                 // eingeloggt
-                $Content_security_Policy_Header['script-src'][] = "'nonce-".\rex_response::getNonce()."'";
-                $Content_security_Policy_Header['style-src'][] = "'nonce-".\rex_response::getNonce()."'";
+                $Content_security_Policy_Header['script-src'][] = "'nonce-" . rex_response::getNonce() . "'";
+                $Content_security_Policy_Header['style-src'][] = "'nonce-" . rex_response::getNonce() . "'";
             }
 
             $value = self::buildCSPHeader($Content_security_Policy_Header);
-            \rex_response::setHeader('Content-security-Policy', $value);
-            \rex_response::sendCacheControl('no-store');
-            \rex_response::setHeader('Pragma', 'no-cache');
+            rex_response::setHeader('Content-security-Policy', $value);
+            rex_response::sendCacheControl('no-store');
+            rex_response::setHeader('Pragma', 'no-cache');
         }
-
     }
 }

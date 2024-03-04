@@ -1,0 +1,13 @@
+{
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.49",
+        "redaxo/php-cs-fixer-config": "^2.5"
+    },
+    "scripts": {
+        "cs-dry": "php-cs-fixer fix -v --ansi --dry-run --config=.php-cs-fixer.dist.php",
+        "cs-fix": "php-cs-fixer fix -v --ansi --config=.php-cs-fixer.dist.php"
+    },
+    "replace": {
+        "psr/log": "*"
+    }
+}

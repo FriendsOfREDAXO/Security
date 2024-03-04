@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Login required</title>
-    <style type="text/css" nonce="<?=rex_response::getNonce()?>">
+    <style type="text/css" nonce="<?= rex_response::getNonce()?>">
         html,
         body {
             height: 100%;
@@ -76,7 +76,7 @@
     <div class="security-container">
         <div class="security-error">
             <p class="security-error-title">Login</p>
-            <form action="<?= rex_url::base(); ?>" method="post">
+            <form action="<?= rex_url::base() ?>" method="post">
                 <input type="text" class="security-pw-input" name="fe_access_password" value=""
                     placeholder="**********" /><br>
                 <button type="submit" class="security-pw-btn">Enter</button>
