@@ -38,7 +38,7 @@ final class BackendUserLog
     /** @var string */
     public const TYPE_DELETE = 'delete';
 
-    /** @var string[] */
+    /** @var array<string> */
     public const TYPES = [self::TYPE_ACCESS, self::TYPE_LOGIN, self::TYPE_LOGOUT, self::TYPE_UPDATE, self::TYPE_CLICK, self::TYPE_LOGIN_FAILED, self::TYPE_REGISTERD, self::TYPE_DELETE];
 
     /** @var int */
@@ -167,7 +167,7 @@ final class BackendUserLog
             $be_impersonate_user_view = $be_impersonate_user->getId() . ' [' . $be_impersonate_user->getEmail() . ']';
         }
 
-        $log = new rex_log_file(self::logFile(), self::MAX_FILE_SIZE);
+        $log = rex_log_file::factory(self::logFile(), self::MAX_FILE_SIZE);
         $data = [
             $ip,
             $be_user_view,
