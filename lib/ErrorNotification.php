@@ -100,12 +100,17 @@ final class ErrorNotification extends rex_error_handler
      */
     public static function getLogFiles(): array
     {
-        $log_files = scandir(rex_addon::get('security')->getDataPath('error_notification'));
+        $log_files = scandir(self::getPath());
         if (!is_array($log_files)) {
             $log_files = [];
         }
 
         return array_diff($log_files, ['.', '..']);
+    }
+
+    public static function getPath(): string
+    {
+        return rex_addon::get('security')->getDataPath('error_notification');
     }
 
     public static function deleteLogFiles(): void

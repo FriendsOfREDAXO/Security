@@ -104,32 +104,35 @@ $fragment->setVar('title', $this->i18n('security_settings'));
 $fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');
 
-if ('delete_log' == rex_request('func', 'string')) {
-    ErrorNotification::deleteLogFiles();
-    echo rex_view::success($this->i18n('log_deleted'));
-} elseif ('download_log' == rex_request('func', 'string')) {
-    ErrorNotification::downloadLogFiles();
-    echo rex_view::success($this->i18n('log_deleted'));
-}
+if (!file_exists(ErrorNotification::getPath())) {
+    echo rex_view::error(rex_i18n::rawMsg('security_error_notification_path_not_exists', ErrorNotification::getPath()));
+} else {
+    if ('delete_log' == rex_request('func', 'string')) {
+        ErrorNotification::deleteLogFiles();
+        echo rex_view::success($this->i18n('log_deleted'));
+    } elseif ('download_log' == rex_request('func', 'string')) {
+        ErrorNotification::downloadLogFiles();
+        echo rex_view::success($this->i18n('log_deleted'));
+    }
 
-$formElements = [];
+    $formElements = [];
 
-$n = [];
-$n['label'] = '<label for="error_notification_log">' . $this->i18n('log') . '</label>';
-$n['field'] = '<div>' . $this->i18n('log_info', count(ErrorNotification::getLogFiles()), rex_addon::get('security')->getDataPath('error_notifications')) . '</div>';
-$formElements[] = $n;
+    $n = [];
+    $n['label'] = '<label for="error_notification_log">' . $this->i18n('log') . '</label>';
+    $n['field'] = '<div>' . $this->i18n('log_info', count(ErrorNotification::getLogFiles()), rex_addon::get('security')->getDataPath('error_notifications')) . '</div>';
+    $formElements[] = $n;
 
-$n = [];
-$n['label'] = '<label for="error_notification_delete"></label>';
-$n['field'] = '<button class="btn btn-delete right" type="submit" name="func" value="delete_log" title="' . $this->i18n('log_delete') . '">' . $this->i18n('log_delete') . '</button>';
-$n['field'] .= ' <button class="btn btn-save right" type="submit" name="func" value="download_log" title="' . $this->i18n('log_download') . '">' . $this->i18n('log_download') . '</button>';
-$formElements[] = $n;
+    $n = [];
+    $n['label'] = '<label for="error_notification_delete"></label>';
+    $n['field'] = '<button class="btn btn-delete right" type="submit" name="func" value="delete_log" title="' . $this->i18n('log_delete') . '">' . $this->i18n('log_delete') . '</button>';
+    $n['field'] .= ' <button class="btn btn-save right" type="submit" name="func" value="download_log" title="' . $this->i18n('log_download') . '">' . $this->i18n('log_download') . '</button>';
+    $formElements[] = $n;
 
-$fragment = new rex_fragment();
-$fragment->setVar('elements', $formElements, false);
-$formElementsView = $fragment->parse('core/form/form.php');
+    $fragment = new rex_fragment();
+    $fragment->setVar('elements', $formElements, false);
+    $formElementsView = $fragment->parse('core/form/form.php');
 
-$content = '
+    $content = '
 <form action="' . rex_url::currentBackendPage() . '" method="post">
 	<fieldset>
 		' . $formElementsView . '
@@ -137,8 +140,9 @@ $content = '
 	</form>
   ';
 
-$fragment = new rex_fragment();
-$fragment->setVar('class', 'edit');
-$fragment->setVar('title', $this->i18n('security_settings'));
-$fragment->setVar('body', $content, false);
-echo $fragment->parse('core/page/section.php');
+    $fragment = new rex_fragment();
+    $fragment->setVar('class', 'edit');
+    $fragment->setVar('title', $this->i18n('security_settings'));
+    $fragment->setVar('body', $content, false);
+    echo $fragment->parse('core/page/section.php');
+}

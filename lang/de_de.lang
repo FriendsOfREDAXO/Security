@@ -108,3 +108,4 @@ security_backend_nonce_inactive = BackendNonce ist inaktiv. Wir empfehlen es nur
 security_backend_nonce_active  = BackendNonce ist aktiv. <a href="{0}">deaktivieren</a>
 security_header_not_found = Header konnten nicht geladen werden. URL vielleicht https und Zertifkat ist abgelaufen oder falsch?
 
+security_error_notification_path_not_exists = Error LogPath does not exist `{0}`
