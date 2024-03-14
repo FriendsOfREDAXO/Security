@@ -1,5 +1,5 @@
 security = FOR Security
-security_navi_title = FOR Security
+security_navi_title = Security
 security_title = FOR Security
 
 security_overview = Übersicht
@@ -64,7 +64,7 @@ security_header = Header
 security_header_htaccess = Folgenden Code in der .htaccess ergänzen. Der Eintrag sorgt dafür, dass ähnliche Header auch bei nicht REDAXO Dateien gesetzt werden. Bitte den `Content-security-Policy` Header unbedingt an die eigenen Bedürfnisse anpassen
 
 security_be_log = Log
-security_be_user_log = security-Backend-User-Log
+security_be_user_log = Security-BackendUser-Log
 security_be_user_log_title = Log-Übersicht
 security_be_user_log_warning_logisinactive = BE-User-Log ist inaktiv. Wir empfehlen es zu aktivieren. <a href="{0}">aktivieren</a>
 security_be_user_log_warning_logisactive  = BE-User-Log ist aktiv. <a href="{0}">deaktivieren</a>

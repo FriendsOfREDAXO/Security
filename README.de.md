@@ -1,4 +1,4 @@
-# security für REDAXO CMS >5.15
+# security für REDAXO CMS ^5.17
 
 AddOn, das einen einfachen Weg bietet, das REDAXO-Backend mit verschiedenen Methoden zu sichern.
 

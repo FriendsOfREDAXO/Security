@@ -28,7 +28,7 @@ final class ErrorNotification extends rex_error_handler
     /** @var string */
     public const email_name = 'security Info';
 
-    /** @var string[] */
+    /** @var array<string> */
     private const HEADERS = ['Function', 'File', 'Line'];
 
     public static function init(): void
@@ -80,7 +80,7 @@ final class ErrorNotification extends rex_error_handler
             // direct email
             $mail = new rex_mailer();
             $mail->AddAddress(self::getEMail(), self::getName());
-            $mail->Subject = 'security - Error: Reporting ' . $exception->getMessage();
+            $mail->Subject = 'Security - Error: Reporting ' . $exception->getMessage();
             $mail->MsgHTML(rex_markdown::factory()->parse($markdown_whoops, true));
             $mail->AltBody = $markdown_whoops;
             if (!$mail->Send()) {
@@ -147,9 +147,9 @@ final class ErrorNotification extends rex_error_handler
             if (0 < count($sendfiles)) {
                 $mail = new rex_mailer();
                 $mail->AddAddress(self::getEMail(), self::getName());
-                $mail->Subject = 'security - Error: Bundle-Reporting';
-                $mail->MsgHTML('security - Error: Bundle-Reporting');
-                $mail->AltBody = 'security - Error: Bundle-Reporting';
+                $mail->Subject = 'Security - Error: Bundle-Reporting';
+                $mail->MsgHTML('Security - Error: Bundle-Reporting');
+                $mail->AltBody = 'Security - Error: Bundle-Reporting';
                 foreach ($sendfiles as $sendfile) {
                     $mail->addAttachment(rex_addon::get('security')->getDataPath('error_notification/' . $sendfile));
                 }

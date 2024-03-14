@@ -248,8 +248,8 @@ final class IPAccess
     }
 
     /**
-     * @param string[] $ip_array
-     * @return string[]
+     * @param array<string> $ip_array
+     * @return array<string>
      */
     public static function addIP(array $ip_array): array
     {
