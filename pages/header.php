@@ -13,14 +13,14 @@ use function count;
 
 /** @var rex_addon $this */
 
-$currentDomain = rex_yrewrite::getCurrentDomain();
-
 // HTTPS
 $content = [];
-if ('https' == substr($currentDomain->getUrl(), 0, 5)) {
+if (rex_yrewrite::isHttps()) {
     $content[] = rex_view::success(rex_i18n::msg('security_fe_https_ok'));
+    $server = 'https://' . $_SERVER['HTTP_HOST'] . '/';
 } else {
     $content[] = rex_view::error(rex_i18n::msg('security_fe_https_warning'));
+    $server = 'http://' . $_SERVER['HTTP_HOST'] . '/';
 }
 
 $fragment = new rex_fragment();
@@ -28,18 +28,17 @@ $fragment->setVar('title', rex_i18n::msg('security_header_https'), false);
 $fragment->setVar('body', implode('', $content), false);
 echo $fragment->parse('core/page/section.php');
 
-// REDAXO Frontend
-
+// REDAXO Frontend Scan
 foreach (['frontend', 'frontendredaxo', 'backend'] as $envirement) {
     switch ($envirement) {
         case 'frontend':
-            $file = $currentDomain->getUrl() . 'assets/core/redaxo-logo.svg';
+            $file = $server . 'assets/core/redaxo-logo.svg';
             break;
         case 'frontendredaxo':
-            $file = $currentDomain->getUrl();
+            $file = $server;
             break;
         case 'backend':
-            $file = $currentDomain->getUrl() . 'redaxo/';
+            $file = $server . 'redaxo/';
             break;
     }
     $content = [];
