@@ -24,14 +24,18 @@ final class IPAccess
     /** @var string */
     private const config_name = 'config/ip_access_config.json';
 
-    public static bool $active = true;
+    public static bool $forceInactivity = false;
 
     /**
      * @throws rex_exception
      */
     public static function init(): void
     {
-        if (!self::$active) {
+        if ('cli' === PHP_SAPI) {
+            return;
+        }
+
+        if (self::$forceInactivity) {
             return;
         }
 
@@ -50,7 +54,7 @@ final class IPAccess
             });
         }
 
-        if ('cli' === PHP_SAPI) {
+        if (!self::isActive()) {
             return;
         }
 
@@ -279,4 +283,10 @@ final class IPAccess
 
         return false;
     }
+
+    public static function forceInactivity(bool $forceInactivity = true): void
+    {
+        self::$forceInactivity = $forceInactivity;
+    }
+
 }
