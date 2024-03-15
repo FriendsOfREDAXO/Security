@@ -109,3 +109,7 @@ security_backend_nonce_active  = BackendNonce ist aktiv. <a href="{0}">deaktivie
 security_header_not_found = Header konnten nicht geladen werden. URL vielleicht https und Zertifkat ist abgelaufen oder falsch?
 
 security_error_notification_path_not_exists = Error LogPath does not exist `{0}`
+security_live_mode = Live-Modus
+security_live_mode_activate_info = Achtung! Hier kann man das live-mode aus dem Backend heraus aktivieren. Das führt dazu, dass ein Admin unmittelbar nicht mehr in der Lage ist, tiefere Eingriffe in REDAXO über das Backend durchzuführen. Das lässt sich nur über die core/config.yml wieder zurücksetzen.
+security_live_mode_activate = Aktiviere Live-Mode
+security_live_mode_activated = Live-Mode wurde aktiviert. Einige Seiten und Inhalte werden nun nicht mehr zugreifbar oder sichtbar sein.

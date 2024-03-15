@@ -1,5 +1,5 @@
 package: security
-version: '0.1.0'
+version: '1.0'
 author: 'Friends Of REDAXO'
 supportpage: https://github.com/FriendsOfREDAXO/security
 requires:
@@ -7,7 +7,7 @@ requires:
     php:
         version: '>=8.1, <9'
     packages:
-        yform: '>=3.2,<5.0.0-dev'
+        yform: '^4.0.0'
         yrewrite: '^2.8'
         phpmailer: '>2.12'
 
@@ -22,8 +22,13 @@ page:
         ip_access:
             title: 'translate:security_ip_access'
             table_name: rex_security_ip_access
+            live_mode: false
         header:
+            live_mode: false
             title: 'translate:security_header'
+        live_mode:
+            live_mode: false
+            title: 'translate:security_live_mode'
         checks:
             title: 'translate:security_checks'
 
