@@ -25,6 +25,6 @@ rex_extension::register(
     ['table_name' => 'rex_security_ip_access'],
 );
 
-echo rex_view::content(rex_i18n::msg('security_ip_access_info'));
+echo rex_view::error(rex_i18n::msg('security_ip_access_info'));
 
 include rex_path::plugin('yform', 'manager', 'pages/data_edit.php');
