@@ -52,10 +52,14 @@ final class IPAccess
 
                 self::getConfig(true);
             });
-        }
 
-        if (!self::isActive()) {
-            return;
+            if (!self::isActive('backend')) {
+                return;
+            }
+        } else {
+            if (!self::isActive('frontend')) {
+                return;
+            }
         }
 
         if (!self::getStatus(self::getIP())) {
@@ -288,5 +292,4 @@ final class IPAccess
     {
         self::$forceInactivity = $forceInactivity;
     }
-
 }
