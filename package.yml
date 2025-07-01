@@ -7,9 +7,9 @@ requires:
     php:
         version: '>=8.1, <9'
     packages:
-        yform: '^4.0.0'
         yrewrite: '^2.8'
         phpmailer: '>2.12'
+        yform: '>=3.2,<6.0.0-dev'
 
 page:
     title: 'translate:security_navi_title'
