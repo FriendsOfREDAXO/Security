@@ -7,9 +7,7 @@ switch (rex_request('func', 'string')) {
         $config = rex_file::getConfig(rex_path::coreData('config.yml'));
         $config['live_mode'] = true;
         rex_file::putConfig(rex_path::coreData('config.yml'), $config);
-
-        echo rex_view::success(rex_i18n::msg('security_live_mode_activated'));
-        break;
+        rex_response::sendRedirect(rex_url::backendPage('security/overview'));
 }
 
 $content = '
