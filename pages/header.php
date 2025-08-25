@@ -77,32 +77,24 @@ foreach (['frontend', 'frontendredaxo', 'backend'] as $envirement) {
         $type = 'X-XSS-Protection';
         if (isset($header[strtolower($type)])) {
             $content[] = rex_view::info(rex_i18n::msg('security_xss_fe_header_found', $header[strtolower($type)]));
-            // TODO: Erklärung
-        } else {
-            $content[] = rex_view::info(rex_i18n::msg('security_xss_fe_header_missing'));
         }
 
         $type = 'X-Content-Type-Options';
         if (isset($header[strtolower($type)])) {
             $content[] = rex_view::success(rex_i18n::msg('security_cto_fe_header_found', $header[strtolower($type)]));
-            // TODO: Erklärung
         } else {
             $content[] = rex_view::error(rex_i18n::msg('security_cto_fe_header_missing'));
         }
 
         $type = 'X-Frame-Options';
         if (isset($header[strtolower($type)])) {
-            $content[] = rex_view::success(rex_i18n::msg('security_fo_fe_header_found', $header[strtolower($type)]));
-            // TODO: Erklärung
-        } else {
-            $content[] = rex_view::error(rex_i18n::msg('security_fo_fe_header_missing'));
+            $content[] = rex_view::info(rex_i18n::msg('security_fo_fe_header_found', $header[strtolower($type)]));
         }
 
         $type = 'Content-Security-Policy';
         if (isset($header[strtolower($type)])) {
             $content[] = rex_view::info(rex_i18n::msg('security_csp_fe_header_found'));
             $content[] = '<pre>' . $header[strtolower($type)] . '</pre>';
-            // TODO: Erklärung
         }
     }
 

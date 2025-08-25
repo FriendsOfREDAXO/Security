@@ -73,8 +73,8 @@ final class Header
             'object-src' => [
                 "'none'",
             ],
-            // 'frame-ancestors' => ["'self'"],
-            // 'form-action' => ["'self'"], // 'none'
+            'frame-ancestors' => ["'self'"],
+            'form-action' => ["'self'"], // 'none'
             // connect-src
             // font-src
             // frame-src
@@ -98,7 +98,7 @@ final class Header
         $header['Strict-Transport-security'] = 'max-age=31536000; includeSubDomains; preload';
         $header['Referrer-Policy'] = 'same-origin';
         $header['X-Content-Type-Options'] = 'nosniff';
-        $header['X-Frame-Options'] = 'sameorigin';
+        // $header['X-Frame-Options'] = 'sameorigin'; // deprecated, stattdessen frame-ancestors in CSP nutzen
 
         return $header;
     }
@@ -159,6 +159,8 @@ final class Header
             $Content_security_Policy_Header['style-src'][] = "'self'";
             $Content_security_Policy_Header['base-uri'][] = "'self'";
             $Content_security_Policy_Header['object-src'][] = "'none'";
+            $Content_security_Policy_Header['frame-ancestors'][] = "'self'";
+            $Content_security_Policy_Header['form-action'][] = "'self'";
 
             $be_login = rex::getProperty('login');
             if (null == $be_login || !$be_login->getUser()) {
