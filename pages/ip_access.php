@@ -27,4 +27,8 @@ rex_extension::register(
 
 echo rex_view::error(rex_i18n::msg('security_ip_access_info'));
 
-include rex_path::plugin('yform', 'manager', 'pages/data_edit.php');
+if (file_exists(rex_path::addon('yform', 'pages/manager.data_edit.php'))) {
+    include rex_path::addon('yform', 'pages/manager.data_edit.php');
+} else {
+    include rex_path::plugin('yform', 'manager', 'pages/data_edit.php');
+}
