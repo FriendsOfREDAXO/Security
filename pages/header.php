@@ -60,8 +60,8 @@ foreach (['frontend', 'frontendredaxo', 'backend'] as $envirement) {
         $type = 'Strict-Transport-Security';
         if (isset($header[strtolower($type)])) {
             $content[] = rex_view::success(rex_i18n::msg('security_sts_fe_header_found', $header[strtolower($type)]));
-            // TODO und Check: Info über die Dauer der HSTS
-            // Info über preload
+        // TODO und Check: Info über die Dauer der HSTS
+        // Info über preload
         } else {
             $content[] = rex_view::error(rex_i18n::msg('security_sts_fe_header_missing'));
         }
@@ -69,7 +69,7 @@ foreach (['frontend', 'frontendredaxo', 'backend'] as $envirement) {
         $type = 'Referrer-Policy';
         if (isset($header[strtolower($type)])) {
             $content[] = rex_view::success(rex_i18n::msg('security_rp_fe_header_found', $header[strtolower($type)]));
-            // TODO und Check: same-origin
+        // TODO und Check: same-origin
         } else {
             $content[] = rex_view::error(rex_i18n::msg('security_rp_fe_header_missing'));
         }
