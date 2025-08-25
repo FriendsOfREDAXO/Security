@@ -1,89 +1,45 @@
 <?php
 
-/**
- * @var rex_addon $this
- * @psalm-scope-this rex_addon
- */
+$content = <<<TEXTOSTERONE
 
-$links = [];
+Diese Zusammenstellung von Tools und Ressourcen dient dazu, die Sicherheit und Leistung von Websites zu überprüfen und zu verbessern. Jedes Tool bietet spezifische Einblicke und Hilfestellungen, um Webseiten nicht nur sicherer, sondern auch benutzerfreundlicher und performanter zu gestalten.
 
-$links[] = [
-    'url' => 'https://observatory.mozilla.org/analyze/redaxo.org',
-    'name' => '',
-];
+### Mozilla Observatory
+[Observatory by Mozilla](https://observatory.mozilla.org/analyze/redaxo.org) bietet eine umfassende Analyse der Sicherheitsmaßnahmen einer Website. Es bewertet, wie gut eine Seite gegenüber gängigen Webangriffen geschützt ist, und gibt Empfehlungen zur Verbesserung der Sicherheitskonfiguration.
 
-$links[] = [
-    'url' => 'https://validator.w3.org',
-    'name' => '',
-];
+### W3C Validator
+Der [W3C Markup Validation Service](https://validator.w3.org/) prüft die Markup-Konformität von Webdokumenten mit Webstandards. Korrektes HTML und CSS sind grundlegend für die Sicherheit und Zugänglichkeit einer Webseite.
 
-$links[] = [
-    'url' => 'https://developers.google.com/speed/pagespeed/insights/?hl=de',
-    'name' => '',
-];
+### Google PageSpeed Insights
+[PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/?hl=de) von Google analysiert den Inhalt einer Webseite und gibt Empfehlungen, um deren Ladezeit zu verbessern. Schnell ladende Seiten verbessern nicht nur das Nutzererlebnis, sondern auch die Sicherheit durch reduzierte Ladezeitabhängigkeiten.
 
-$links[] = [
-    'url' => 'https://www.seobility.net/de/seocheck/',
-    'name' => '',
-];
-$links[] = [
-    'url' => 'https://www.backlinktest.com/deadlink.php',
-    'name' => '',
-];
-$links[] = [
-    'url' => 'https://www.ssllabs.com/ssltest/analyze.html?d=redaxo.org',
-    'name' => '',
-];
+### Seobility SEO Check
+Der [Seobility SEO Check](https://www.seobility.net/de/seocheck/) untersucht Webseiten auf allgemeine SEO-Probleme und gibt Tipps zur Optimierung für Suchmaschinen. Eine gut optimierte Seite erhöht die Sichtbarkeit und kann indirekt zur Sicherheit beitragen, indem sie gute Praktiken fördert.
 
-$links[] = [
-    'url' => 'https://www.whynopadlock.com/',
-    'name' => 'Keychainüberprüfunge',
-];
+### Backlinktest Dead Link Checker
+[Backlinktest's Dead Link Checker](https://www.backlinktest.com/deadlink.php) identifiziert tote Links auf einer Webseite. Tote Links können ein Sicherheitsrisiko darstellen und die Glaubwürdigkeit einer Webseite untergraben.
 
-$links[] = [
-    'url' => 'https://web.dev/measure/',
-    'name' => '',
-];
+### SSL Labs
+[SSL Labs' SSL Test](https://www.ssllabs.com/ssltest/analyze.html?d=redaxo.org) überprüft die Qualität der SSL/TLS-Konfiguration einer Website. Eine starke Konfiguration ist essenziell, um den Datenverkehr zwischen Nutzern und der Webseite zu schützen.
 
-$links[] = [
-    'url' => 'https://webaccessibilitychecklist.com/',
-    'name' => '',
-];
+### Why No Padlock?
+[Why No Padlock?](https://www.whynopadlock.com/) hilft dabei, Probleme zu identifizieren, die verhindern, dass eine Webseite als vollständig sicher eingestuft wird. Es überprüft auf unsichere Links, fehlende Sicherheitsheader und andere Sicherheitslücken.
 
-$links[] = [
-    'url' => 'https://www.a11yproject.com/checklist/',
-    'name' => '',
-];
+### web.dev Measure
+[web.dev Measure](https://web.dev/measure/) bietet eine umfassende Analyse für Performance, Zugänglichkeit, Best Practices und SEO. Es gibt klare Anweisungen zur Verbesserung der Webseite in diesen Schlüsselbereichen.
 
-$links[] = [
-    'url' => 'https://www.cookiemetrix.com/',
-    'name' => '',
-];
+### Web Accessibility Checklist
+[Web Accessibility Checklist](https://webaccessibilitychecklist.com/) und [The A11Y Project Checklist](https://www.a11yproject.com/checklist/) bieten Richtlinien und Prüfpunkte, um die Zugänglichkeit einer Webseite zu gewährleisten. Barrierefreiheit ist ein wichtiger Aspekt der Web-Sicherheit und -Inklusion.
 
-/*
-https://github.com/davidsonfellipe/awesome-wpo (Web Performance Optimization List)
-https://github.com/TheJambo/awesome-testing
-https://github.com/ZYSzys/awesome-captcha#readme
-Twitter-Card-Validator https://cards-dev.twitter.com/validator
-Browser Test https://ghostinspector.com
-https://googlechrome.github.io/lighthouse/viewer/?psiurl=https%3A%2F%2Fmeinedomain.de%2F&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo&category=pwa&utm_source=lh-chrome-ext
-*/
+### CookieMetrix
+[CookieMetrix](https://www.cookiemetrix.com/) analysiert die Cookie-Nutzung einer Webseite und hilft dabei, die Einhaltung der Datenschutz-Grundverordnung (DSGVO) zu verstehen. Datenschutz und Sicherheit gehen Hand in Hand bei der Gewährleistung einer sicheren Webumgebung.
 
-/*
- * Best practise
- *
- * PHPSESSID php.ini wird der Name der Session in dem Parameter session.name
- *  session_name("meineSession");
- */
+Diese Tools zusammen bieten einen umfassenden Ansatz, um verschiedene Aspekte der Web-Sicherheit, Performance und Zugänglichkeit zu überprüfen und zu verbessern. Durch die regelmäßige Anwendung dieser Ressourcen können Entwickler und Website-Betreiber ihre Seiten effektiv schützen und optimieren.
+TEXTOSTERONE;
 
-$content = [];
-foreach ($links as $link) {
-    $content[] = '<h3>' . (('' == $link['name']) ? $link['url'] : $link['name']) . '</h3><p><a href="' . $link['url'] . '">' . $link['url'] . '</a></p>';
-}
-
-echo rex_view::content(rex_i18n::msg('security_checks_info'));
+$content = str_replace('<a href="', '<a target="_blank" rel="noopener noreferrer" href="', rex_markdown::factory()->parse($content));
 
 $fragment = new rex_fragment();
 $fragment->setVar('title', $this->i18n('security_checks'), false);
-$fragment->setVar('body', implode('', $content), false);
+$fragment->setVar('body', $content, false);
 echo $fragment->parse('core/page/section.php');
